@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#152d49">
+<title>一步一步看懂正射影｜向量分解・互動教學版</title>
+<style>
+:root{--navy:#193651;--ink:#20364a;--muted:#63778b;--teal:#087f78;--orange:#dc843d;--violet:#7461be;--line:#dae4eb;--bg:#f5f8fa;--white:#fff;--greenbg:#eaf7f2;--warn:#ac5e27}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.65}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #65abe7;outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.48}
+header{background:linear-gradient(105deg,#173049,#244e66);color:white}header .container{padding:26px 26px 24px}.container{max-width:1330px;margin:auto;padding:0 26px}.overline{font-size:12px;letter-spacing:.11em;font-weight:800;color:#c2e0e3}h1{font-size:clamp(27px,3.4vw,42px);margin:5px 0;line-height:1.25;letter-spacing:-.04em}header p{color:#d1e2ea;font-size:14px;margin:7px 0 0;max-width:780px}.headrow{display:flex;align-items:center;justify-content:space-between;gap:20px}.headnote{border:1px solid #ffffff40;padding:7px 13px;border-radius:100px;color:#e3edf4;font-size:12px;white-space:nowrap}
+nav{position:sticky;top:0;z-index:20;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.navinner{max-width:1330px;margin:auto;padding:12px 26px}.navtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;font-size:13px}.navtop strong{color:#315269}.stepbar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.steptab{border:1px solid #d7e2eb;border-radius:10px;background:#f7fafc;color:#648096;font-size:12px;padding:8px 3px;display:flex;justify-content:center;align-items:center;gap:6px;white-space:nowrap;transition:all .15s}.steptab b{border-radius:50%;background:#e7eef5;color:#5e7590;width:20px;height:20px;display:inline-grid;place-items:center;font-size:11px}.steptab.current{background:#e8f5f3;color:#08736a;border-color:#65b9af;font-weight:850}.steptab.current b{color:#fff;background:#087f78}.steptab.done:not(.current){color:#236858;background:#f0faf6;border-color:#c2e6d8}.steptab.done b{background:#d1ebdc;color:#1c7251}.steptab:disabled{opacity:.57}
+main{padding-top:26px;padding-bottom:55px}.lessonhead{margin-bottom:19px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#168078;font-weight:850}.lessonhead h2{font-size:clamp(23px,2.8vw,33px);line-height:1.3;margin:3px 0 7px;letter-spacing:-.025em}.lessonhead p{font-size:15px;color:#64788b;margin:0;max-width:850px}.layout{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(340px,.92fr);gap:19px;align-items:start}.card{border:1px solid var(--line);border-radius:17px;background:var(--white);box-shadow:0 10px 30px #1e426008;overflow:hidden}.graphheader{padding:16px 19px 8px;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}.graphheader strong{font-size:15px}.legend{font-size:12px;color:#718393;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.legend span{display:flex;align-items:center;gap:5px}.ldot{display:inline-block;width:9px;height:9px;border-radius:50%}.ldot.a{background:var(--teal)}.ldot.b{background:var(--orange)}.ldot.h{background:var(--violet)}.graphwrap{padding:0 10px 4px}.graphwrap svg{width:100%;height:auto;display:block;user-select:none;touch-action:none}.graphcaption{border-top:1px solid #e4ecf1;background:#f8fbfc;padding:12px 18px;min-height:49px;color:#61778b;font-size:13px}.instruction{padding:23px}.questionkicker{display:flex;align-items:center;gap:8px;color:#0b8179;font-weight:850;font-size:13px;margin-bottom:9px}.questionkicker span{font-size:19px}.instruction h3{font-size:21px;line-height:1.4;letter-spacing:-.025em;margin:0 0 9px}.instruction .qintro{font-size:14px;color:#5f7488;margin:0 0 18px}.actions{display:grid;gap:9px}.choice{background:#fff;text-align:left;border:1.5px solid #d5e2ea;padding:12px 13px;border-radius:12px;color:#30495f;font-weight:700;font-size:14px}.choice:hover:not(:disabled){border-color:#88bcb6;background:#f4fbfa}.choice.correct{border-color:#72bca5;background:#ecf8f2;color:#116b54}.choice.wrong{border-color:#e7ab95;background:#fff2ec;color:#a55630}.choice:disabled{opacity:1}.msg{margin:15px 0 0;padding:12px 14px;border-radius:11px;color:#566d81;background:#f2f6f9;font-size:14px;min-height:44px}.msg.good{color:#136953;background:#e8f7f0}.msg.try{color:#9b4f24;background:#fff3e8}.msg strong{color:inherit}.primary,.secondary{border-radius:11px;padding:11px 17px;font-weight:800;font-size:14px}.primary{color:white;background:#0c8078;border:1px solid #0c8078}.primary:hover:not(:disabled){background:#096d66}.secondary{color:#335675;background:white;border:1px solid #cfdeea}.secondary:hover:not(:disabled){background:#eff6fb}.smallrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:12px 0}.smalllabel{font-size:13px;font-weight:800;color:#556a7c}.range{accent-color:#0b8278;width:100%;cursor:pointer}.rangeblock{padding:13px 14px;border:1px solid #e0e9ef;border-radius:12px;background:#f8fafc;margin:12px 0}.rangeblock b{color:#2c5364}.rangeblock label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:7px}.casebuttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}.casebuttons button{border:1.5px solid #d9e4ea;border-radius:10px;padding:10px 4px;background:#fff;color:#526c81;font-weight:800}.casebuttons button.active{border-color:#0b8176;color:#08736d;background:#eaf7f3}.casebuttons button.seen:after{content:' ✓';color:#208c6d}.breakdown{border-radius:12px;background:#f6f8fc;padding:12px 14px;margin:11px 0;font-size:14px;color:#415972}.mathline{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:clamp(17px,2vw,22px);font-weight:650;white-space:normal;overflow-wrap:anywhere;color:#26455c;margin:5px 0}.mathbox{margin:13px 0;background:#edf4f9;border:1px solid #d9e8f2;padding:13px;border-radius:10px}.reveal{animation:fadein .2s ease}.under{font-size:13px;color:#617589}.vector{font-family:"Cambria Math",Georgia,serif;font-style:italic}.navfooter{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:18px 0}.navstatus{font-size:13px;color:#687e90;text-align:center}.navbuttons{display:flex;gap:10px;margin-left:auto}.teacherpanel{margin-top:20px;border:1px solid #d4e2ea;border-radius:16px;background:#ffffff;box-shadow:0 8px 24px rgba(23,54,73,.05);overflow:hidden}.teacherpanel[hidden]{display:none!important}.teacherpanel-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;background:linear-gradient(180deg,#f8fbfd,#f2f7fa);border-bottom:1px solid #e4edf3}.teacherpanel-title{display:flex;align-items:center;gap:10px}.teacherbadge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:#e8f5f3;color:#0b7e76;font-size:18px}.teacherpanel-header strong{display:block;font-size:17px;color:#26475d}.teacherpanel-header p{margin:2px 0 0;font-size:12px;color:#6d8294}.teacherpanel-tag{font-size:12px;font-weight:800;color:#0b7e76;background:#e8f5f3;border:1px solid #cae7e2;border-radius:999px;padding:5px 10px}.teacherpanel-body{padding:18px}.teachergrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.teachercard{border:1px solid #e1ebf1;border-radius:14px;background:#fbfdfe;padding:14px 15px}.teachercard h4{margin:0 0 8px;font-size:13px;font-weight:900;letter-spacing:.04em;color:#3c6179}.teachercard p,.teachercard li{margin:0;font-size:14px;color:#4f677b;line-height:1.75}.teachercard ul{margin:0;padding-left:1.2em}.teacherquote{font-size:15px;color:#20455c;background:#f7fbfd;border:1px dashed #cfe1eb;border-radius:14px;padding:14px 15px;margin-bottom:12px}.teacherquote b{color:#0c8078}.teachermode{display:flex;gap:6px;align-items:center;cursor:pointer;color:#597080;font-size:12px}.teachermode input{accent-color:#127d74}footer{margin-top:24px;font-size:12px;color:#8393a4;text-align:center}
+@keyframes fadein{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}@media(max-width:1040px){.layout{grid-template-columns:1fr}.instruction{padding:21px}.graphwrap{max-width:800px;margin:auto}.stepbar{gap:5px}.steptab{font-size:0}.steptab b{font-size:11px}.teachergrid{grid-template-columns:1fr}}@media(max-width:610px){header .container{padding:20px 15px}.headnote{display:none}.container{padding:0 12px}.navinner{padding:9px 12px}.navtop{flex-wrap:wrap;row-gap:4px;margin-bottom:7px}.steptab{padding:7px 0}.graphheader{padding:12px 12px 5px}.graphwrap{padding:0}.legend{gap:8px}.graphcaption{padding:10px 12px}.instruction{padding:17px}.navfooter{align-items:stretch;flex-direction:column}.navbuttons{width:100%;margin:0}.navbuttons button{flex:1}.casebuttons button{font-size:13px}.lessonhead h2{font-size:24px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+/* 點選作答、拖曳向量的統一互動樣式 */
+.graphwrap svg { cursor:crosshair; }
+.graphwrap svg [data-drag] { cursor:grab; }
+.graphwrap svg.dragging [data-drag] { cursor:grabbing; }
+.taskpanel { border:1px solid #d5e6e9; background:#f2faf9; padding:14px 15px; border-radius:12px; margin:11px 0 15px; }
+.taskpanel .tasklabel { color:#08756d; font-size:12px; font-weight:900; letter-spacing:.05em; }
+.taskpanel p { margin:5px 0 0; font-size:14px; color:#315568; line-height:1.7; }
+.storybox { margin:12px 0; padding:13px 15px; border-radius:12px; background:#fff9ef; border:1px solid #f0dcc0; font-size:14px; color:#65543c; }
+.actiontag { display:inline-flex; font-size:12px; font-weight:800; color:#33718b; background:#edf5fa; border-radius:100px; padding:5px 10px; margin:3px 5px 3px 0; }
+.caseinfo { background:#f7f9fc; border:1px solid #e2eaf1; border-radius:11px; padding:11px 12px; font-size:14px; margin:10px 0; }
+.caseinfo strong { color:#176f66; }
+@media(max-width:610px){.taskpanel{padding:11px 12px}.storybox{padding:10px 12px}}
+
+.first-answer-actions{margin-top:16px;padding:14px 15px;background:#f7fafc;border:1px solid #dae6ee;border-radius:13px}
+.first-answer-actions .first-answer-title{font-size:13px;font-weight:850;color:#3f6077;margin:0 0 9px}
+.first-answer-actions button{min-width:145px}
+.first-answer-actions .first-answer-help{font-size:12px;color:#677f90;margin:9px 0 0}
+/* 輸入作答區：和座標操作並存 */
+.answerpanel{margin-top:13px;padding:16px;border:1px solid #d3e3ea;border-radius:14px;background:linear-gradient(135deg,#f9fcfd,#f2f8fb)}
+.answerpanel h4{margin:0 0 4px;color:#254961;font-size:15px}
+.answerpanel .inputdesc{margin:0 0 12px;color:#668092;font-size:13px}
+.answerfields{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}
+.answerfield{display:flex;flex-direction:column;gap:5px;flex:1 1 102px;min-width:0;font-size:13px;font-weight:800;color:#49667c}
+.answerfield input{border:1.5px solid #cddde8;border-radius:10px;padding:10px 12px;background:#fff;color:#213f55;min-width:0;width:100%;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
+.answerfield input:focus{border-color:#198c82;box-shadow:0 0 0 3px #c8ece5}
+.answerbuttons{display:flex;gap:8px;flex-wrap:wrap}
+.answerbuttons button{font-size:13px;padding:9px 12px}
+.answerhelp{margin:11px 0 0;color:#678093;font-size:12px;line-height:1.6}
+.msg.try{background:#f4f7fb;color:#3c6178;border:1px solid #dae7f1}
+.msg.good{border:1px solid #cae8d9}
+@media(max-width:610px){.answerpanel{padding:12px}.answerbuttons button{flex:1}}
+
+/* 座標軸的數字同時是可操作的答題按鈕 */
+.h-value-chip{cursor:pointer;outline:none;touch-action:manipulation}
+.h-value-chip:hover rect,.h-value-chip:focus-visible rect{fill:#e5d9ff;stroke:#694dc1;stroke-width:3}
+.graphwrap svg [data-h-vector]{cursor:pointer;touch-action:manipulation}
+.msg[hidden]{display:none!important}
+@media(max-width:610px){
+ header .container{padding:15px 14px}h1{font-size:26px}header p{font-size:12px;line-height:1.5}
+ .navinner{padding:8px 10px}.navtop{font-size:12px;gap:6px}.navtop strong{font-size:12px}
+ .teachermode{font-size:11px;gap:5px}.teachermode input{width:18px;height:18px}
+ .stepbar{gap:4px}.steptab{height:40px;min-height:40px;border-radius:9px}
+ main{padding-top:14px;padding-bottom:28px}.lessonhead{margin-bottom:12px}.lessonhead h2{font-size:22px}
+ .lessonhead p{font-size:13px;line-height:1.55}
+ .layout{gap:12px}.card{border-radius:13px}.graphheader{flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px 5px}
+ .legend{gap:8px;font-size:11px;line-height:1.4}
+ .graphcaption{font-size:12px;line-height:1.5;padding:8px 12px}
+ .instruction{padding:15px}.instruction h3{font-size:19px}.instruction .qintro{font-size:14px;line-height:1.55;margin-bottom:9px}
+ .first-answer-actions{margin-top:8px;padding:12px}.first-answer-actions button{width:100%}
+ .answerpanel{padding:13px}.answerfields{display:grid;grid-template-columns:1fr;gap:10px}
+ .answerfield{font-size:14px}.answerfield input{min-height:50px;font-size:16px}
+ .answerbuttons{display:grid;grid-template-columns:1fr;gap:8px}
+ .answerbuttons button,.first-answer-actions button,.navbuttons button{min-height:48px;font-size:15px}
+ .msg{font-size:14px;line-height:1.6;padding:12px}.navfooter{margin-top:12px;gap:9px}
+ .teacherpanel-body{padding:12px}.teachercard{padding:12px}
+ button{touch-action:manipulation}
+}
+
+
+/* 第三關：透過圖上可觸控的兩個分量學習向量分解 */
+.decomp-activity{padding:15px 16px;border:1px solid #d2e5ed;background:#f5fafc;border-radius:14px}
+.decomp-activity p{margin:0 0 11px;color:#375873;font-size:14px}
+.component-state{display:flex;gap:9px;flex-wrap:wrap}
+.component-status{flex:1;min-width:124px;padding:11px 12px;border-radius:11px;background:#fff;border:1px solid #d7e6ee;color:#506c80;font-size:14px;font-weight:850;text-align:center}
+.component-status.checked{border-color:#90cbbb;background:#eaf8f1;color:#176a53}
+.graphwrap svg [data-component]{cursor:pointer;touch-action:manipulation}
+.formula-name{display:inline-block;font-family:system-ui,'Microsoft JhengHei',sans-serif;font-size:clamp(15px,1.65vw,19px);font-weight:850;color:#23516c}
+.formula-eq{display:inline-block;font-size:clamp(17px,2vw,22px)}
+.vec-inline{font-weight:850;color:#2c6583;white-space:nowrap}
+@media(max-width:610px){.component-state{gap:7px}.component-status{min-width:110px;font-size:13px}.decomp-activity{padding:12px}.formula-eq{display:block;margin-top:8px}}
+
+/* 學生／教師登入與進度看板，獨立於原教學樣式 */
+[hidden]{display:none!important}
+:root{--portal-blue:#173d60;--portal-accent:#087f78}
+body:not(.portal-ready) #lessonShell{display:none}
+.auth-screen{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 75% 10%,#d7eeed,#f5f8fb 45%,#e7eff6);display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px 14px}
+.auth-card{width:min(100%,480px);background:#fff;border:1px solid #dce7ee;border-radius:24px;padding:clamp(22px,4vw,34px);box-shadow:0 22px 70px #243a531c}
+.auth-eyebrow{font-size:12px;letter-spacing:.12em;color:#0c8078;font-weight:900}
+.auth-card h2{font-size:clamp(23px,4vw,30px);letter-spacing:-.025em;margin:7px 0 7px;color:#1c3e55}
+.auth-card p{margin:0 0 18px;color:#657d8e;font-size:14px}
+.auth-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
+.auth-switch button{border:1px solid #d8e4e9;background:#f7fafc;border-radius:12px;padding:11px;font-size:14px;color:#51697a;font-weight:800}
+.auth-switch button.active{background:#e7f7f3;color:#07685f;border-color:#82cfc2}
+.auth-form{display:grid;gap:11px}.auth-form label{font-size:13px;font-weight:800;color:#3e5d70;display:grid;gap:5px}
+.auth-form input{border:1.5px solid #cddde7;border-radius:11px;background:#fff;padding:12px 13px;width:100%;font-size:16px;color:#183b56}
+.auth-form input:focus{outline:3px solid #b7e8e1;border-color:#31958b}
+.auth-submit{border:0;border-radius:12px;background:#0b8075;padding:13px 18px;color:#fff;font-weight:900;font-size:15px;margin-top:3px}
+.auth-submit:disabled{opacity:.55;cursor:wait}
+.auth-message{padding:10px 12px;border-radius:11px;margin-top:12px;color:#934f29;background:#fff1e7;font-size:13px}
+.auth-small{font-size:12px!important;line-height:1.8}.auth-small a{color:#0d766c}
+.portal-bar{position:sticky;top:0;z-index:45;background:#f7fbfc;border-bottom:1px solid #d9e5eb;padding:8px clamp(12px,3vw,28px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.portal-user{font-weight:800;color:#24475f;font-size:13px}.portal-user small{font-weight:500;color:#73899b;margin-left:7px}
+.portal-bar-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.portal-mini{border:1px solid #c9dce5;background:white;color:#3b6078;border-radius:10px;padding:7px 11px;font-size:12px;font-weight:800}
+.portal-mini.active{background:#def4ef;border-color:#8bd1c5;color:#06766c}
+.portal-save{font-size:12px;color:#607e8b;min-width:80px;text-align:right}
+#teacherDashboard{min-height:calc(100vh - 52px);background:#f4f8fa;padding:clamp(20px,4vw,42px) 14px}
+.dashboard-wrap{max-width:1200px;margin:auto}.dashboard-eyebrow{color:#0d7a70;letter-spacing:.1em;font-size:12px;font-weight:900}
+.dashboard-wrap h2{font-size:clamp(25px,3vw,35px);margin:5px 0;color:#24445e}.dashboard-wrap .dash-desc{color:#637b90;margin:0 0 23px}
+.dashboard-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.stat-card{background:#fff;border:1px solid #dfe9ef;border-radius:16px;padding:17px 18px;box-shadow:0 4px 18px #28516c08}
+.stat-card strong{display:block;font-size:clamp(24px,2.5vw,31px);line-height:1.3;color:#174c68;margin:4px 0}
+.stat-card span{font-size:13px;color:#6b8292}.stat-card .percent{color:#087e73}
+.dashboard-panel{background:#fff;border:1px solid #d9e6ee;border-radius:18px;box-shadow:0 4px 22px #28516c08;overflow:hidden}
+.dashboard-toolbar{padding:17px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #e6edf1}
+.dashboard-toolbar h3{font-size:18px;margin:0 auto 0 0;color:#24475b}.dashboard-toolbar input,.dashboard-toolbar select{border:1px solid #cddce5;border-radius:10px;padding:10px 11px;color:#2b5067;background:white;max-width:100%;font-size:14px}
+.dashboard-toolbar input{width:min(240px,100%)}.dashboard-toolbar select{width:min(170px,100%)}
+.dashboard-toolbar button{border:1px solid #afcfd0;border-radius:10px;background:#e9f5f3;color:#07786d;padding:10px 12px;font-weight:800;font-size:13px}
+.dashboard-table-scroll{overflow-x:auto}.dashboard-table{width:100%;border-collapse:collapse;text-align:left;min-width:700px}
+.dashboard-table th{font-size:12px;color:#70879a;background:#f8fbfd;padding:13px 14px;font-weight:900}
+.dashboard-table td{padding:14px;border-top:1px solid #edf1f4;color:#37586d;font-size:14px;vertical-align:middle}
+.student-name{font-weight:850;color:#24485d}.student-email{display:block;font-size:12px;color:#8396a7;margin-top:2px}
+.progress-bar{height:8px;border-radius:99px;background:#e3edf1;overflow:hidden;margin-top:5px;width:min(170px,100%)}
+.progress-bar i{height:100%;display:block;background:#158d82;border-radius:99px;transition:width .2s}
+.progress-pct{font-size:12px;font-weight:800;color:#127f75}.dash-tag{font-size:12px;background:#f2f7fa;border:1px solid #dae7ed;padding:4px 8px;border-radius:7px;white-space:nowrap}
+.detail-btn{font-size:12px;font-weight:800;color:#14796f;background:#ebf8f4;border:1px solid #acdacf;border-radius:9px;padding:6px 9px}
+.student-detail{padding:13px 16px;background:#f6fbfa;border-radius:11px;margin:7px 0;color:#3a6170;font-size:13px;line-height:1.9}
+.student-detail span{display:inline-block;margin:2px 4px 2px 0;padding:2px 6px;border-radius:6px;background:#e9eef4;color:#738694}
+.student-detail span.done{background:#d7f3e8;color:#136954}
+.dashboard-empty{padding:30px 16px;text-align:center;color:#668395}.dashboard-notice{padding:12px 16px;color:#607e90;font-size:12px;border-top:1px solid #ebf1f4}
+.role-student .teachermode{display:none!important}
+.role-demo #teacherDashboard{display:none!important}
+.demo-notice{max-width:1330px;margin:17px auto 0;padding:12px 16px;border:1px solid #bbe0d7;border-radius:14px;background:#effaf6;color:#235c58;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;line-height:1.75}
+.demo-notice[hidden]{display:none!important}
+.demo-notice strong{color:#076c64}
+.demo-notice .demo-pill{display:inline-block;border:1px solid #a5d5c8;background:#ddf3ec;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:900}
+@media(max-width:680px){.demo-notice{margin:9px 12px 0;padding:11px 13px;font-size:12px}}
+@media(max-width:680px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-toolbar{align-items:stretch}.dashboard-toolbar h3{width:100%}.dashboard-toolbar input,.dashboard-toolbar select{flex:1;min-width:140px}.portal-save{order:3;width:100%;text-align:left}.auth-screen{align-items:flex-start;padding-top:40px}.portal-bar{position:relative}.dashboard-table td,.dashboard-table th{padding:10px}}
+
+/* 公式採用瀏覽器原生 MathML，不使用會造成錯位的組合箭頭字元。 */
+.math-equation{overflow-x:auto;overscroll-behavior-inline:contain;padding:9px 2px 12px;font-size:clamp(18px,2.7vw,26px);line-height:1.6;white-space:nowrap;color:#153e60}
+.math-equation math{font-family:"Cambria Math","STIX Two Math","Noto Sans Math",serif;min-width:max-content;font-size:1.08em}
+.final-formula{background:#ebf8f3;border:1px solid #9ac8b9}
+.formula-name{display:block;margin-top:6px;margin-bottom:8px;font-size:clamp(15px,2vw,20px);line-height:1.75}
+.formula-name math{font-family:"Cambria Math","STIX Two Math","Noto Sans Math",serif;font-size:1.08em}
+.decomp-equation{margin:16px 0 5px;padding:14px 6px;background:#f1f7fb;border:1px solid #c5dfe8;border-radius:12px;text-align:center;overflow-x:auto}
+.decomp-equation math{font-family:"Cambria Math","STIX Two Math","Noto Sans Math",serif;font-size:clamp(20px,3vw,28px)}
+.ob-lock-note{margin:0 0 13px;border:1px solid #d9e3ee;border-radius:12px;background:#f3f7fc;color:#34556e;padding:12px 14px;font-size:14px;font-weight:730;line-height:1.75}
+.ob-lock-note.unlocked{border-color:#b6dfcf;background:#eef9f4;color:#176c52}
+@media(max-width:610px){.math-equation{font-size:clamp(16px,4vw,20px)}.mathbox{padding:10px 11px}.decomp-equation{padding:12px 5px}.decomp-equation math{font-size:20px}.ob-lock-note{font-size:13px}}
+</style>
+</head>
+<body>
+<section id="authScreen" class="auth-screen" aria-label="學生教師登入">
+  <div class="auth-card">
+    <div class="auth-eyebrow">數學互動教室 · STUDENT / DEMO / TEACHER</div>
+    <h2>正射影學習平台</h2>
+    <p>學生可儲存學習進度；演示者可自由跳關；只有教師能查看班級資料。</p>
+    <div id="authLoading">正在檢查登入狀態…</div>
+    <div id="authSetup" hidden>
+      <p class="auth-message">網站尚未連接 Firebase。請先依下載包中的「設定說明.md」設定 Firebase 並部署完整資料夾。</p>
+      <p class="auth-small">設定完成後，才能使用真正的帳號登入及跨裝置進度同步。此畫面不會假裝已經儲存資料。</p>
+    </div>
+    <div id="authPanel" hidden>
+      <div class="auth-switch"><button id="tabLogin" type="button" class="active">登入</button><button id="tabRegister" type="button">學生註冊</button></div>
+      <form id="loginForm" class="auth-form">
+        <label>登入帳號／電子郵件<input id="loginEmail" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required ></label>
+        <label>密碼<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="請輸入密碼"></label>
+        <button id="loginSubmit" type="submit" class="auth-submit">登入學習平台</button>
+      </form>
+      <form id="registerForm" class="auth-form" hidden>
+        <label>姓名／暱稱<input id="registerName" type="text" required maxlength="32" placeholder="例：王小明"></label>
+        <label>班級<input id="registerClass" type="text" required maxlength="24" placeholder="例：高二甲班"></label>
+        <label>電子郵件<input id="registerEmail" type="email" autocomplete="email" required></label>
+        <label>密碼（至少 6 碼）<input id="registerPassword" type="password" autocomplete="new-password" required minlength="6"></label>
+        <button id="registerSubmit" type="submit" class="auth-submit">建立學生帳號</button>
+      </form>
+      <div id="authMessage" class="auth-message" role="alert" hidden></div>
+      
+    </div>
+  </div>
+</section>
+<div id="portalBar" class="portal-bar" hidden>
+  <div class="portal-user"><span id="portalUserName">學習者</span><small id="portalRole"></small></div>
+  <div class="portal-bar-actions">
+    <button type="button" id="showTeacherDashboard" class="portal-mini" hidden>教師儀表板</button>
+    <button type="button" id="showLessonPreview" class="portal-mini" hidden>教材預覽</button>
+    <button type="button" id="portalLogout" class="portal-mini">登出</button>
+  </div>
+  <span id="portalSaveStatus" class="portal-save" role="status"></span>
+</div>
+<section id="teacherDashboard" hidden>
+  <div class="dashboard-wrap">
+    <div class="dashboard-eyebrow">TEACHER DASHBOARD · 正射影單元</div>
+    <h2>學生學習進度總覽</h2>
+    <p class="dash-desc">學生完成關卡後自動更新。可依班級、姓名搜尋，查看各關完成情形。</p>
+    <div class="dashboard-stats">
+      <div class="stat-card"><span>學生人數</span><strong id="statTotal">0</strong></div>
+      <div class="stat-card"><span>已完成七關</span><strong id="statFinished">0</strong></div>
+      <div class="stat-card"><span>進行中</span><strong id="statActive">0</strong></div>
+      <div class="stat-card"><span>平均完成率</span><strong class="percent" id="statAverage">0%</strong></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-toolbar">
+        <h3>學生名單與進度</h3>
+        <input id="teacherSearch" placeholder="搜尋學生、電子郵件" aria-label="搜尋學生">
+        <select id="teacherClass" aria-label="依班級篩選"><option value="">所有班級</option></select>
+        <button id="exportCsv" type="button">匯出 CSV</button>
+      </div>
+      <div class="dashboard-table-scroll"><table class="dashboard-table"><thead><tr><th>學生</th><th>班級</th><th>學習進度</th><th>目前階段</th><th>最近活動</th><th>檢視</th></tr></thead><tbody id="studentRows"></tbody></table></div>
+      <div id="teacherEmpty" class="dashboard-empty" hidden>目前還沒有學生資料。</div>
+      <div id="teacherNotice" class="dashboard-notice">只顯示使用此 Firebase 專案註冊的學生。學生無法讀取其他人的進度。</div>
+    </div>
+  </div>
+</section>
+<div id="lessonShell" hidden>
+<div id="demoNotice" class="demo-notice" hidden aria-label="演示模式說明"><span class="demo-pill">演示模式</span><span><strong>可直接切換七關並使用教師提示</strong>，方便教學演示；沒有學生儀表板，也不讀取或儲存學習進度。</span></div>
+
+<header><div class="container"><div class="headrow"><div><div class="overline">高中數學 · 向量的內積與正射影</div><h1>一步一步，看懂正射影。</h1></div><div class="headnote">座標點選＋輸入作答 · 拖曳向量 · 7 個學習階段</div></div><p>不用選擇題，也不用一開始就背公式。讓學生拖動向量、在直角座標平面點選或輸入答案，從觀察一步步走到公式。</p></div></header>
+<nav aria-label="學習階段"><div class="navinner"><div class="navtop"><strong id="progressText">第 1 關，共 7 關</strong><label class="teachermode"><input id="teacherMode" type="checkbox" disabled> 教師模式：自由切換階段</label></div><div class="stepbar" id="stepbar"></div></div></nav>
+<main class="container">
+<section class="lessonhead"><span class="eyebrow" id="stepKicker">觀察 · 01</span><h2 id="stepTitle"></h2><p id="stepDesc"></p></section>
+<div class="layout">
+<section class="card" aria-label="互動幾何畫板"><div class="graphheader"><strong id="graphTitle">互動幾何圖</strong><div class="legend"><span><i class="ldot a"></i>OP：原向量</span><span><i class="ldot b"></i>OB：投影方向</span><span><i class="ldot h"></i>OH：正射影</span></div></div><div class="graphwrap"><svg id="plot" viewBox="0 0 760 520" role="img" aria-label="可拖曳向量 P、B 並點選座標位置作答的互動直角座標平面"><defs><marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#087f78"/></marker><marker id="mB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#dc843d"/></marker><marker id="mH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#7461be"/></marker><marker id="mHP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#2b96b5"/></marker></defs><rect width="760" height="520" fill="#fdfefe"/><g id="grid"></g><g id="geometry"></g></svg></div><div class="graphcaption" id="graphCaption" aria-live="polite"></div></section>
+<section class="card instruction"><div class="questionkicker"><span>✦</span> 想一想，再揭曉</div><h3 id="promptTitle"></h3><p class="qintro" id="promptIntro"></p><div id="activity"></div><div id="feedback" class="msg" role="status" aria-live="polite">依照指示進行操作。</div></section>
+</div>
+<div class="navfooter"><div id="navStatus" class="navstatus">完成這一關，即可解鎖下一關。</div><div class="navbuttons"><button class="secondary" id="prevBtn">← 上一關</button><button class="primary" id="nextBtn" disabled>下一關 →</button></div></div>
+<section id="teacherPanel" class="teacherpanel" hidden aria-label="教師引導與教學提醒">
+<div class="teacherpanel-header">
+  <div class="teacherpanel-title">
+    <span class="teacherbadge">✦</span>
+    <div>
+      <strong>教師引導語與教學提醒</strong>
+      <p>只有在勾選「教師模式」後才會顯示這一區。</p>
+    </div>
+  </div>
+  <span class="teacherpanel-tag">教師專用</span>
+</div>
+<div class="teacherpanel-body">
+  <div id="teacherQuote" class="teacherquote"></div>
+  <div class="teachergrid">
+    <section class="teachercard"><h4>本關教學目標</h4><p id="teacherGoal"></p></section>
+    <section class="teachercard"><h4>可直接對學生說</h4><p id="teacherAsk"></p></section>
+    <section class="teachercard"><h4>常見迷思</h4><ul id="teacherPitfall"></ul></section>
+    <section class="teachercard"><h4>教學動作建議</h4><ul id="teacherMove"></ul></section>
+  </div>
+</div>
+</section>
+<footer>一步一步看懂正射影｜座標點選與拖曳向量 · 帳號登入與進度同步需要網路</footer>
+</main>
+</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+const O={x:375,y:270}, K=43;
+const COLORS={a:'#087f78',b:'#dc843d',h:'#7461be',guess:'#cc6a32',ink:'#405b75'};
+const steps=[
+{key:'影子在哪裡',title:'想像一個「垂直落下的影子」',desc:'先觀察圖形，不急著學公式。試著用滑鼠或手指，在直角座標平面上找出影子的位置。',q:'點 P 在直線 ℓ 上的垂直影子，會落在哪個位置？',intro:'不用選選項：直接點一下左邊座標平面，送出你猜的影子位置。',tip:'先問「影子一定在直線上嗎？」再讓學生用點選來預測。這裡特指垂直投影，與一般斜射光線的影子不同。'},
+{key:'直角與垂足',title:'影子為什麼落在這裡？',desc:'把影子和原來的點 P 連起來，觀察這段線與地面形成的角度。',q:'先保持 OB 的方向不變，你能找出垂足 H 嗎？',intro:'請先在座標平面點選 H，或輸入 H 的座標。找對之後才開放拖曳 B，旋轉投影直線。',tip:'先將 OB 固定，讓學生集中思考垂足條件：H 在 ℓ 上、PH ⟂ ℓ；找對後再旋轉 OB，理解垂足會隨著直線方向改變。'},
+{key:'拆成兩個向量',title:'一個向量，可以拆成兩個方向嗎？',desc:'第二關已經找到垂足。這一關不再重找 H，而是把原向量 OP 拆成「沿投影直線」與「垂直投影直線」兩段。',q:'在圖上依序點選紫色 OH 和藍色 HP，看看兩個向量如何接成 OP。',intro:'先點紫色 OH，再點藍色 HP。兩個方向都觀察完，就能理解正射影向量到底是哪一段。',tip:'關鍵是 向量 OP = 向量 OH + 向量 HP 的向量加法。PH 是垂線段；作向量分解時應使用從 H 指向 P 的 HP，不能把方向寫反。'},
+{key:'方向和正負',title:'正射影可能往反方向嗎？',desc:'直接拖動 P，觀察 OP 與 OB 之間夾角的變化，以及垂足在 O 的哪一側。',q:'請把 P 拖到使夾角變成「鈍角」，再點出 H 在哪裡。',intro:'沒有選項；請親手移動向量。也可以試試銳角和直角時，影子朝向哪一邊。',tip:'當夾角為鈍角，有向純量正射影為負，但線段 OH 的長度仍是非負數。讓學生比較銳角、直角、鈍角。'},
+{key:'連結三角比',title:'用 cos θ 算出影子的有向長度',desc:'先從 OP = (3,4) 的 3–4–5 直角三角形出發，再延伸到其他圖形。',q:'OP 在 OB 方向上的「有向純量正射影」是多少？',intro:'先看圖形，再輸入數值；也能在座標平面點出 H 來驗證你的想法。',tip:'銳角範例可以由 cos θ = 鄰邊/斜邊導出 ‖a⃗‖cos θ；再用有向的 cos θ 統一銳角、直角、鈍角。'},
+{key:'形成公式',title:'將幾何想法一步步寫成公式',desc:'既然已知道影子方向與長度，接下來只要把 cos θ 換成內積，再乘上單位方向向量。',q:'請先任意拖動 P、B，再逐步揭開正射影公式。',intro:'拖動橘色 B 會旋轉投影直線，垂足 H 與正射影向量 OH 會同步改變。',tip:'關鍵是 a⃗·b⃗=‖a⃗‖‖b⃗‖cosθ，有向純量正射影=(a⃗·b⃗)/‖b⃗‖，最後再乘上 b⃗/‖b⃗‖；b 不能為零向量。'},
+{key:'實作練習',title:'在座標平面上找出真正的答案',desc:'最後三題都不提供選項。請根據向量座標計算，再直接點出正射影向量的終點 H。',q:'計算正射影後，請輸入 H 的座標。',intro:'你可以輸入 x、y，或直接在圖上點 H。系統會幫你檢查思路，不會因為一次失誤就卡關。',tip:'三題依序為水平正向、水平負向、斜向投影。學生須在網格上點出 H，並解釋向量正射影與純量正射影的差別。'}
+];
+const teacherNotes=[
+{quote:'先不要給公式，先讓學生回答：<b>「影子一定要落在哪裡？」</b>',goal:'讓學生建立「正射影先是一個幾何現象」的直觀：影子會落在投影直線 ℓ 上，而且是從 P 對 ℓ 作垂線所得到的位置。',ask:'你現在不是在算答案，而是在判斷「影子應該落在哪裡」。請先確認兩件事：第一，它要在直線 ℓ 上；第二，從 P 連過去要和 ℓ 垂直。',pitfalls:['把影子理解成任意方向的照射，而忽略這裡是「垂直投影」。','只看左右位置或遠近，沒有檢查是否真的落在直線 ℓ 上。'],moves:['先讓學生隨意點一次，再追問：你為什麼選這裡？','學生答錯時，不直接給答案，而是請他檢查「有沒有在直線上」與「是不是 90°」。']},
+{quote:'請學生說出：<b>「垂足正是 ℓ 上距離 P 最近的點，因為 PH ⟂ ℓ。」</b>',goal:'把「影子的位置」提升成正式數學語言：垂足 H 是使 PH 與投影直線 ℓ 垂直的點。',ask:'拖動 P 或 B 之後，原本猜的位置還對嗎？請你重新找一個 H，使得從 P 到 H 的連線和 ℓ 形成直角。',pitfalls:['以為垂足永遠是往下掉，沒有注意投影直線可能旋轉。','以為只要看起來靠近 P 就可以，沒有用「垂直」當判準。'],moves:['刻意把 B 拖成斜方向，讓學生知道垂足會跟著改變。','可要求學生口頭完整說一次：「H 在 ℓ 上，而且 PH 垂直於 ℓ。」']},
+{quote:'<b>不再重複找 H！</b> 讓學生用向量接龍發現「先從 O 到 H，再從 H 到 P」。',goal:'理解 OP 能分成沿 b⃗ 方向的 OH 與垂直 b 的 HP，並辨別點 H、向量 OH 和向量 HP。',ask:'如果從 O 先沿著投影直線走到 H，再從 H 垂直走到 P，整段位移和直接從 O 走到 P 是否相同？為什麼第二段必須是 HP 而不是 PH？',pitfalls:['把 PH 當作向量加法中的第二段，但它的方向應是 H 指向 P。','以為 OH 與 HP 的長度相加就等於 OP 的長度；實際上是「向量相加」。'],moves:['讓學生先點紫色 OH，再點藍色 HP，口頭描述兩段位移。','學生完成後，在圖上指出 向量 OP = 向量 OH + 向量 HP，請他拖曳 P 或 B 再檢查一次。']},
+{quote:'這裡是建立「有向」觀念的關鍵關卡。',goal:'理解正射影不只看長度，也要看方向；當 OP 與 OB 的夾角為鈍角時，投影會落在 O 的反方向。',ask:'把 P 拖到夾角變成鈍角。這時影子 H 會落在 O 的哪一側？如果用數字表示有向純量正射影，它會是正還是負？',pitfalls:['把「長度」和「有向純量」混為一談。','以為投影一定沿著 OB 的箭頭方向。'],moves:['依序讓學生做出銳角、直角、鈍角三種情況，再比較 H 的位置。','可搭配提問：直角時投影為什麼是 0？鈍角時為什麼會是負的？']},
+{quote:'現在才把前面的圖形經驗連到三角比。',goal:'從直角三角形出發，讓學生接受有向純量正射影可以用 |OP|cosθ 來表示。',ask:'已知 OP 的長度和夾角 θ，你能不能不用先找 H，就估計影子在 OB 方向上的長度？這和 3–4–5 三角形中的鄰邊有什麼關係？',pitfalls:['只記得 cosθ=鄰邊/斜邊，卻沒有連回投影長度。','遇到鈍角時，不知道 cosθ 會變成負值。'],moves:['先用 3–4–5 例子讓學生得到 5×cosθ=3。','再提醒學生：這裡的長度若看成「有向量」，就要保留正負。']},
+{quote:'從幾何到代數，關鍵是把 cosθ 換成內積。',goal:'把「方向 × 長度」整合成正式公式：向量 a⃗ 在向量 b⃗ 上的正射影 = ((a⃗·b⃗)/‖b⃗‖²)b⃗。',ask:'我們已經知道投影方向要沿著 b，也知道有向長度是 ‖a⃗‖cosθ。那如果不用角度，要怎麼把 cosθ 改寫成內積？最後為什麼還要再乘上 b⃗/‖b⃗‖？',pitfalls:['只背公式，不知道每一部分的來源。','忘記 b 不能是零向量，或不知道分母的 ‖b⃗‖² 怎麼來。'],moves:['建議一行一行揭示公式，每出現一行就口頭說明來源。','請學生指出：哪一部分負責方向？哪一部分負責大小？']},
+{quote:'最後一關讓學生在沒有選項的情況下，真正完成一次投影。',goal:'整合幾何、三角比與公式，能自行計算正射影並在座標平面點出 H。',ask:'先算 a⃗·b⃗、再算 ‖b⃗‖²，接著得到係數 (a⃗·b⃗)/‖b⃗‖²，最後用這個係數乘上 b⃗。算完後，請你把 H 直接點在座標平面上。',pitfalls:['把純量正射影和向量正射影混淆。','只算出數值，卻不知道 H 在圖上應該落在哪裡。'],moves:['要求學生先口述流程，再動手點圖。','學生點對後，可再追問：如果只問「純量正射影」，答案會少掉哪一部分？']}
+];
+
+const exercise=[
+ {a:[3,4],b:[5,0],name:'正向的純量正射影',explain:'a⃗·b⃗ = 3×5 + 4×0 = 15，‖b⃗‖ = 5，所以有向純量正射影 = 15/5 = 3。垂足 H = (3, 0)。'},
+ {a:[-2,3],b:[4,0],name:'負方向的正射影向量',explain:'a⃗·b⃗ = −8，‖b⃗‖² = 16，因此 向量 a⃗ 在向量 b⃗ 上的正射影 = (−8/16)(4, 0) = (−2, 0)，所以 H = (−2, 0)。'},
+ {a:[2,1],b:[1,1],name:'傾斜方向上的正射影',explain:'a⃗·b⃗ = 3，‖b⃗‖² = 2，因此 向量 a⃗ 在向量 b⃗ 上的正射影 = (3/2)(1, 1) = (1.5, 1.5)，所以 H = (1.5, 1.5)。'}
+];
+let teacherCapability=false; // Only the authenticated teacher/demo role may turn on quick navigation.
+const s={step:0,done:Array(7).fill(false),teacher:false,a:{x:3,y:4},b:{x:5,y:0},guess:null,
+ shownProjection:false,firstSubmitted:false,formulaShown:0,quiz:0,quizDone:[false,false,false],casesSeen:new Set(),misses:Array(7).fill(0),quizMisses:[0,0,0],hints:Array(7).fill(0),quizHints:[0,0,0],activeField:'x',componentsSeen:new Set()};
+const svg=$('plot'),grid=$('grid'),g=$('geometry');
+const mk=(tag,attrs={},parent=g)=>{const node=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,String(v));parent.append(node);return node};
+const line=(p,q,attrs={},parent=g)=>mk('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:'#86a0b4','stroke-width':2,...attrs},parent);
+const dot=(p,attrs={})=>mk('circle',{cx:p.x,cy:p.y,r:7,fill:'#fff',stroke:'#365c77','stroke-width':2.4,...attrs});
+const label=(p,txt,attrs={})=>{const n=mk('text',{x:p.x,y:p.y,'font-family':'system-ui,Microsoft JhengHei,sans-serif','font-size':16,'font-weight':780,fill:COLORS.ink,...attrs});n.textContent=txt;return n};
+const xy=(x,y)=>({x:O.x+x*K,y:O.y-y*K});
+const fmt=x=>Number((Math.abs(x)<1e-9?0:x).toFixed(2)).toString();
+const fmtPt=v=>`(${fmt(v.x)}, ${fmt(v.y)})`;
+const coords=p=>({x:(p.x-O.x)/K,y:(O.y-p.y)/K});
+const clamp=(v,l,h)=>Math.max(l,Math.min(h,v));
+const snap=x=>Math.round(x*4)/4;
+function compute(){const {a,b}=s,bb=b.x*b.x+b.y*b.y,dot=a.x*b.x+a.y*b.y,coef=dot/bb;
+ const h={x:coef*b.x,y:coef*b.y},al=Math.hypot(a.x,a.y),bl=Math.sqrt(bb),ang=al?Math.acos(clamp(dot/(al*bl),-1,1))*180/Math.PI:0;
+ return {bb,dot,coef,h,bl,al,ang,signed:dot/bl};}
+function pointLineDistance(pt,b=s.b){const bl=Math.hypot(b.x,b.y)||1;return Math.abs(pt.x*b.y-pt.y*b.x)/bl;}
+function rayParameter(pt,b=s.b){const bb=b.x*b.x+b.y*b.y||1;return (pt.x*b.x+pt.y*b.y)/bb;}
+function guessGeometry(pt=s.guess){const {bl}=compute();const lineDist=pointLineDistance(pt);const onLine=lineDist<=0.22;const fromP={x:pt.x-s.a.x,y:pt.y-s.a.y};const norm=Math.hypot(fromP.x,fromP.y);const u={x:s.b.x/bl,y:s.b.y/bl};const lineAngle=norm>.02?Math.acos(clamp(Math.abs((u.x*fromP.x+u.y*fromP.y)/norm),0,1))*180/Math.PI:0;const nearPerp=Math.abs(lineAngle-90)<=8;return {lineDist,onLine,lineAngle,nearPerp,rayT:rayParameter(pt)};}
+function lineOrPerpHint(pt=s.guess,extra=''){const g=guessGeometry(pt);if(!g.onLine)return `點 H 要在投影直線上。先把 H 移到 OB 所在的投影直線 ℓ 上，再觀察它的位置。${extra}`;return `你選的 H 已經在線上了，做得很好！接下來要找「垂直點」：從 P 連到 H 的線要和投影直線成 90°。${extra}`;}
+function status(html='',klass=''){const el=$('feedback');el.hidden=s.step===0&&!s.firstSubmitted;el.innerHTML=html||'在左側座標平面點選位置作答。';el.className='msg'+(klass?' '+klass:'');}
+function success(html){status('<strong>你發現了：</strong> '+html,'good');}
+function solvedExploreNotice(){const st=s.step,{h,ang,signed,dot,bb,al}=compute();
+ if(st===0)success(`你已找對垂足 H=${fmtPt(h)}。記得：H 在直線 ℓ 上，而且 PH 與 ℓ 垂直。<div style="margin-top:5px">你可以繼續拖曳 P 或 B，再觀察 H 會不會跟著改變。</div>`);
+ else if(st===1)success(`你已找到垂足 H=${fmtPt(h)}。判準是：H 在 ℓ 上，且 PH ⟂ ℓ。<div style="margin-top:5px">你可以繼續拖曳 P 或 B，重新測試新的圖形。</div>`);
+ else if(st===2&&s.done[2])success(`已完成向量分解：${decompMath}你仍可拖曳向量觀察。`);
+ else if(st===3)success(`你已完成本關探索。目前夾角約 ${fmt(ang)}°（${currentCase(ang)}），有向正射影為 ${fmt(signed)}。<div style="margin-top:5px">你可以繼續拖動 P，比較銳角、直角、鈍角時的投影方向。</div>`);
+ else if(st===4)success(`你已找對 H=${fmtPt(h)}。目前 |OP|=${fmt(al)}，有向純量正射影 = ${fmt(signed)}。<div style="margin-top:5px">你可以繼續拖曳向量，觀察 θ 改變時，投影長度如何跟著改變。</div>`);
+ else if(st===6)success(`本題已通過！目前 a⃗·b⃗=${fmt(dot)}、‖b⃗‖²=${fmt(bb)}，垂足 H=${fmtPt(h)}。<div style="margin-top:5px">你仍可拖曳 P、B 觀察變化，或按「下一題」。</div>`);
+}
+function updateComponentState(){const state=$('componentState');if(!state)return;const eq=$('decompEquation');if(eq)eq.hidden=!(s.done[2]||s.componentsSeen.size===2);state.innerHTML=`<span class="component-status ${s.componentsSeen.has('parallel')?'checked':''}">① 紫色 OH ${s.componentsSeen.has('parallel')?'✓':'○'}</span><span class="component-status ${s.componentsSeen.has('perp')?'checked':''}">② 藍色 HP ${s.componentsSeen.has('perp')?'✓':'○'}</span>`;}
+function selectComponent(which){
+ if(s.step!==2)return;
+ if(which==='perp'&&!s.componentsSeen.has('parallel')){status('從 O 出發比較容易看清楚向量加法：請先點紫色 OH 走到 H，再點藍色 HP 走到 P。');return;}
+ s.componentsSeen.add(which);
+ const state=$('componentState');if(state){
+  state.innerHTML=`<span class="component-status ${s.componentsSeen.has('parallel')?'checked':''}">① 紫色 OH ${s.componentsSeen.has('parallel')?'✓':'○'}</span><span class="component-status ${s.componentsSeen.has('perp')?'checked':''}">② 藍色 HP ${s.componentsSeen.has('perp')?'✓':'○'}</span>`;
+ }
+ if(s.componentsSeen.size===2){
+  completeStep();const eq=$('decompEquation');if(eq)eq.hidden=false;
+  success(`<strong>你發現向量加法了！</strong> 從 O 到 H，再從 H 到 P，正好等於從 O 到 P：${decompMath}。<div class="under">紫色 OH 是 a 在 b 上的正射影向量；藍色 HP 垂直於 b。你可以繼續拖曳 P、B，觀察兩段如何一起變化。</div>`);
+ }else if(which==='parallel'){
+  status('你已找到第一段：紫色 OH 從 O 沿投影直線走到 H。接著請點選從 H 指向 P 的藍色 HP。');
+ }else{
+  status('你已找到垂直分量：藍色 HP 從 H 指向 P。接著請點選紫色 OH，完成兩段向量接龍。');
+ }
+ draw();
+}
+function clearGuess(){s.guess=null;}
+function setupGrid(){grid.replaceChildren();for(let x=-8;x<=8;x++){const px=xy(x,0).x;line({x:px,y:0},{x:px,y:520},{stroke:x===0?'#bdccd9':'#edf1f5','stroke-width':x===0?1.8:1},grid);if(x!==0)labelInGrid(px,O.y+21,String(x));}
+ for(let y=-6;y<=6;y++){const py=xy(0,y).y;line({x:0,y:py},{x:760,y:py},{stroke:y===0?'#bdccd9':'#edf1f5','stroke-width':y===0?1.8:1},grid);if(y!==0&&Math.abs(y)<=5)labelInGrid(O.x+17,py+5,String(y));}}
+function labelInGrid(x,y,t){const n=mk('text',{x,y,'text-anchor':'middle','font-family':'system-ui,Microsoft JhengHei,sans-serif','font-size':12,'font-weight':600,fill:'#8a9cb0','pointer-events':'none'},grid);n.textContent=t;}
+function footVisible(){const st=s.step;if(st===0&&s.guess)return false;if(st===0||st===1||st===4)return s.done[st];if(st===6)return s.quizDone[s.quiz];return true;}
+function projectionVisible(){const st=s.step;if(st===0&&s.guess)return false;if(st===0||st===1||st===4)return s.done[st];if(st===6)return s.quizDone[s.quiz];return true;}
+function currentCase(ang){if(ang<83)return '銳角';if(ang>97)return '鈍角';return '直角';}
+function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct,bb,bl}=compute(),a=s.a,b=s.b;
+ const pA=xy(a.x,a.y),pB=xy(b.x,b.y),pH=xy(h.x,h.y),unit={x:b.x/bl,y:b.y/bl};
+ line(xy(-unit.x*17,-unit.y*17),xy(unit.x*17,unit.y*17),{stroke:st<=1?'#9baebe':'#bda5e6','stroke-width':st<=1?3.1:3,'stroke-dasharray':st<=1?'':'9 7'});
+ if(st<=1)label({x:26,y:246},'投影直線 ℓ',{'font-size':13,fill:'#68869d'});
+ const showFoot=footVisible();
+ if(showFoot){line(pA,pH,{stroke:'#8a81bb','stroke-width':2.5,'stroke-dasharray':'7 6'});
+  const dx=a.x-h.x,dy=a.y-h.y,dlen=Math.hypot(dx,dy);
+  if(dlen>.12){const v={x:dx/dlen,y:dy/dlen},z=.3;
+   const p1=xy(h.x+unit.x*z,h.y+unit.y*z),p2=xy(h.x+(unit.x+v.x)*z,h.y+(unit.y+v.y)*z),p3=xy(h.x+v.x*z,h.y+v.y*z);
+   mk('polyline',{points:`${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`,fill:'none',stroke:COLORS.h,'stroke-width':2.2});}}
+ if(s.guess&&(st===0||!((st===6&&s.quizDone[s.quiz])||(st!==6&&s.done[st])))){
+  const gp=xy(s.guess.x,s.guess.y);line(pA,gp,{stroke:COLORS.guess,'stroke-width':2.3,'stroke-dasharray':'5 6',opacity:.72});
+  dot(gp,{r:8.5,fill:'#fff4e8',stroke:COLORS.guess,'stroke-width':2.8});
+  label({x:gp.x+10,y:gp.y+24},'H',{'font-size':18,fill:'#a8582e',stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
+  label({x:gp.x+10,y:gp.y+42},fmtPt(s.guess),{'font-size':12,fill:'#a8582e',stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
+ }
+ if(st>=3&&st<=5){const start=Math.atan2(b.y,b.x),end=Math.atan2(a.y,a.x),diff=Math.atan2(Math.sin(end-start),Math.cos(end-start));
+  if(Math.abs(diff)>.1&&Math.abs(diff)<Math.PI-.025){const pts=[];for(let j=0;j<=24;j++){let t=start+diff*j/24;const q=xy(.76*Math.cos(t),.76*Math.sin(t));pts.push(`${q.x},${q.y}`)}mk('polyline',{points:pts.join(' '),fill:'none',stroke:'#7999b0','stroke-width':2});const mid=start+diff/2;label(xy(1.13*Math.cos(mid),1.13*Math.sin(mid)),'θ',{'font-size':19,'text-anchor':'middle','dominant-baseline':'middle',fill:'#6287a4'});}}
+ if(st===4&&Math.abs(a.x-3)<.02&&Math.abs(a.y-4)<.02&&Math.abs(b.x-5)<.02&&Math.abs(b.y)<.02){label({x:469,y:190},'5',{'font-size':17,fill:COLORS.a});if(showFoot){label({x:440,y:290},'3',{'font-size':17,fill:COLORS.h});label({x:514,y:175},'4',{'font-size':17,fill:COLORS.h});}}
+ line(xy(0,0),pB,{stroke:COLORS.b,'stroke-width':5.2,'stroke-linecap':'round','marker-end':'url(#mB)'});
+ // The orthogonal projection is emphasized and has its own wide touch target.
+ if(projectionVisible()&&Math.hypot(h.x,h.y)>.04){
+  line(xy(0,0),pH,{stroke:'#ffffff','stroke-width':13,'stroke-linecap':'round'});
+  line(xy(0,0),pH,{stroke:COLORS.h,'stroke-width':9,'stroke-linecap':'round','marker-end':'url(#mH)',opacity:.98});
+  line(xy(0,0),pH,{stroke:'transparent','stroke-width':34,'stroke-linecap':'round','data-h-vector':'select','aria-label':'點選紫色正射影向量 OH'});
+ }
+ if(st===2){
+  const hpLen=Math.hypot(a.x-h.x,a.y-h.y),mid=xy((h.x+a.x)/2,(h.y+a.y)/2);
+  if(hpLen>.12){
+   line(pH,pA,{stroke:'#ffffff','stroke-width':12,'stroke-linecap':'round'});
+   line(pH,pA,{stroke:'#2b96b5','stroke-width':6,'stroke-linecap':'round','stroke-dasharray':'11 7','marker-end':'url(#mHP)'});
+   line(pH,pA,{stroke:'transparent','stroke-width':40,'stroke-linecap':'round','data-component':'perp','aria-label':'點選藍色向量 HP'});
+  }
+  const hx=clamp(mid.x+22,90,685),hy=clamp(mid.y-12,43,483);
+  const group=mk('g',{'data-component':'perp',role:'button',tabindex:0,'aria-label':'點選垂直分量向量 HP'});
+  mk('rect',{x:hx-9,y:hy-26,width:68,height:39,rx:10,fill:'#e6f6fb',stroke:'#75bfd5','stroke-width':1.6},group);
+  const txt=mk('text',{x:hx+23,y:hy,'font-size':19,'font-weight':820,'font-family':'system-ui,Microsoft JhengHei,sans-serif','text-anchor':'middle','pointer-events':'none',fill:'#237e9b'},group);txt.textContent='HP';
+  group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();selectComponent('perp');}});
+ }
+
+ line(xy(0,0),pA,{stroke:COLORS.a,'stroke-width':5.2,'stroke-linecap':'round','marker-end':'url(#mA)'});
+ dot(xy(0,0),{r:5,fill:'#435c77',stroke:'#fff','stroke-width':2});label({x:O.x-17,y:O.y+25},'O',{'font-size':16,'text-anchor':'end'});
+ if(showFoot){
+  dot(pH,{r:8,fill:COLORS.h,stroke:'#fff','stroke-width':3});
+  const hText=`H ${fmtPt(h)}`,labelWidth=Math.max(184,40+hText.length*12.8);
+  const labelX=clamp(pH.x+12,8,760-labelWidth-8),labelY=st===2?clamp(pH.y+40,8,520-63):clamp(pH.y-106,8,520-63);
+  const hGroup=mk('g',{'data-h-vector':'fill','class':'h-value-chip',role:'button',tabindex:0,'aria-label':st===2?'點選紫色正射影向量 OH，辨認平行分量':`紫色正射影向量 OH，終點 ${hText}，點選填入答案`});
+  mk('rect',{x:labelX,y:labelY,width:labelWidth,height:60,rx:14,fill:'#eee6ff',stroke:'#9475df','stroke-width':2.2},hGroup);
+  const hSub=mk('text',{x:labelX+13,y:labelY+19,'font-size':14,'font-weight':750,'font-family':'system-ui,Microsoft JhengHei,sans-serif',fill:'#7255bf','pointer-events':'none'},hGroup);hSub.textContent=st===2?'① 沿投影直線的向量 OH':'正射影向量 OH · 點選';
+  const hLabel=mk('text',{x:labelX+13,y:labelY+47,'font-size':26,'font-weight':850,'font-family':'system-ui,Microsoft JhengHei,sans-serif',fill:'#51309c','pointer-events':'none'},hGroup);hLabel.textContent=hText;
+  hGroup.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(st===2)selectComponent('parallel');else fillFromHVector();}});
+ }
+ dot(pB,{r:7,fill:COLORS.b,stroke:'#fff'});label({x:pB.x+13,y:pB.y-11},'B',{'font-size':19,fill:COLORS.b,stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
+ dot(pA,{r:7,fill:COLORS.a,stroke:'#fff'});label({x:pA.x+13,y:pA.y-11},'P',{'font-size':19,fill:COLORS.a,stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
+ mk('circle',{cx:pA.x,cy:pA.y,r:35,fill:'transparent','data-drag':'a','aria-label':'拖曳向量 OP 的端點 P',style:'touch-action:none'});
+ mk('circle',{cx:pB.x,cy:pB.y,r:35,fill:'transparent','data-drag':'b','aria-label':'拖曳向量 OB 的端點 B',style:'touch-action:none'});
+ if(st===3){const c=currentCase(ang);s.casesSeen.add(c);updateCasePanel(c,ang);}
+ if(st===6)updateQuizPanel();
+ let captions=[
+ '拖曳綠色 P 或橘色 B，改變向量。接著在網格上點選「影子」應落的位置。',
+ '請嘗試不同方向的直線；答對後可以點紫色 H 向量上的座標標籤填入 x、y；也可以繼續拖曳向量觀察。',
+ st===2&&s.done[2]?'兩段位移接起來，得到原向量：向量 OP = 向量 OH + 向量 HP。繼續拖曳 P、B，觀察分解如何變化。':'先點紫色 OH，再點藍色 HP；想想兩段位移能否接成原向量 OP。',
+ '把綠色 P 拖到夾角超過 90°，觀察紫色正射影向量何時朝反方向。',
+ '從 3–4–5 開始，也可拖曳向量自行創造三角形，再點出垂足。',
+ '拖動向量 P、B 時，垂足 H 及正射影向量 OH 都會即時變化。',
+ '請計算現在的兩個向量，並直接在座標平面上點出正射影終點 H。'
+ ][st];
+ if(st===3)captions+=`　目前夾角約 ${fmt(ang)}°，${currentCase(ang)}。`;
+ if(st===5&&s.formulaShown===3)captions+=`　目前 a⃗·b⃗=${fmt(dotProduct)}、‖b⃗‖²=${fmt(bb)}、H=${fmtPt(h)}。`;
+ $('graphCaption').textContent=captions;
+}
+function taskBox(h,p){return `<div class="taskpanel"><div class="tasklabel">${h}</div><p>${p}</p></div>`}
+function updateOBLockNote(){const note=$('obLockNote');if(!note)return;const unlocked=s.done[1];note.textContent=unlocked?'🔓 已找到垂足 H！現在可以拖曳橘色 B，觀察投影直線旋轉後的變化。':'🔒 橘色 OB 目前固定。先點出垂足 H 或輸入座標，答對後才能旋轉 B。';note.classList.toggle('unlocked',unlocked);}
+function completeStep(){s.done[s.step]=true;updateNav();updateOBLockNote();reportLessonProgress();}
+function updateCasePanel(c,ang){const n=$('caseData');if(!n)return;
+ const seen=['銳角','直角','鈍角'].map(x=>`${x}${s.casesSeen.has(x)?' ✓':' ○'}`).join('　');
+ n.innerHTML=`<strong>現在的夾角：約 ${fmt(ang)}°（${c}）</strong><div class="under">已探索：${seen}</div>`;}
+function updateQuizPanel(){const n=$('quizData');if(!n)return;
+ const a=s.a,b=s.b;n.innerHTML=`<strong>第 ${s.quiz+1} 題：${exercise[s.quiz].name}</strong><div class="mathline" style="font-size:17px">a = ${fmtPt(a)}，b = ${fmtPt(b)}</div><div class="under">可在下方輸入 H 的 x、y，或直接點左側座標平面。拖曳後題目座標會同步更新；答案可用小數或分數。</div>`;}
+function answerFields(kind){
+ if(kind==='signed')return `<div class="answerpanel"><h4>換你寫下答案</h4><p class="inputdesc">請輸入有向純量正射影（有正負號），不是線段 OH 的長度。紫色 H 標籤出現時，可以直接點選向量上的數字。</p><div class="answerfields"><label class="answerfield">有向純量正射影<input id="signedValue" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1.5" aria-label="有向純量正射影"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitSigned">檢查我的想法</button><button class="secondary" type="button" id="hintButton">給我一個小提示</button></div><p class="answerhelp">可以輸入整數、小數或分數，例如 3/2。答對後仍可拖曳向量。</p></div>`;
+ return `<div class="answerpanel"><h4>我算出的垂足座標 H</h4><p class="inputdesc">你可以輸入兩個座標，也可以直接在圖上點選；當紫色 H 向量出現時，可直接點 H 的座標標籤填入 x、y。</p><div class="answerfields"><label class="answerfield">x 座標<input id="answerX" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1/2" aria-label="垂足 H 的 x 座標"></label><label class="answerfield">y 座標<input id="answerY" inputmode="decimal" autocomplete="off" placeholder="例如 0 或 1.5" aria-label="垂足 H 的 y 座標"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitCoords">檢查我的座標</button><button class="secondary" type="button" id="hintButton">給我一個小提示</button></div><p class="answerhelp">可使用小數或分數；若只對一個座標，系統會提醒你保留正確的部分。</p></div>`;
+}
+function inputNumber(raw){
+ const v=(raw||'').trim().replace(/[−–]/g,'-').replace(/，/g,'.').replace(/\s+/g,'');
+ if(!v)return null;
+ const basic='[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)';
+ const one=new RegExp('^'+basic+'$'),fraction=new RegExp('^('+basic+')/('+basic+')$');
+ if(one.test(v))return Number(v);
+ const hit=v.match(fraction);if(hit&&Number(hit[2])!==0)return Number(hit[1])/Number(hit[2]);
+ return NaN;
+}
+function numericalClose(a,b,tol=.06){return Number.isFinite(a)&&Math.abs(a-b)<=tol;}
+function addAttempt(){if(s.step===6)return ++s.quizMisses[s.quiz];return ++s.misses[s.step];}
+function incrementalTip(first,second,third){const n=addAttempt();return n===1?first:n===2?second:third;}
+function gentle(message){status(`<strong>再往下一步想想：</strong> ${message}<div style="margin-top:6px">可以繼續調整或拖曳試試看；不扣分，也不用重新開始。</div>`,'try');}
+function bindAnswerFields(){
+ const c=$('submitCoords'),a=$('submitSigned'),hint=$('hintButton');
+ if(c)c.onclick=submitCoordinateAnswer;
+ if(a)a.onclick=submitSignedAnswer;
+ if(hint)hint.onclick=showHelpfulHint;
+ const x=$('answerX'),y=$('answerY'),sv=$('signedValue');
+ if(x)x.addEventListener('focus',()=>s.activeField='x');
+ if(y)y.addEventListener('focus',()=>s.activeField='y');
+ if(sv)sv.addEventListener('focus',()=>s.activeField='signed');
+ for(const el of [x,y,sv])if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(c)c.click();else if(a)a.click();}});
+}
+function clearAnswerFields(){for(const id of ['answerX','answerY','signedValue']){const el=$(id);if(el)el.value='';}}
+function fillFromHVector(){
+ const {h,signed}=compute(),x=$('answerX'),y=$('answerY'),sv=$('signedValue');
+ if(x&&y){x.value=fmt(h.x);y.value=fmt(h.y);s.activeField='y';
+  status(`已從紫色正射影向量選取 H=${fmtPt(h)}，x、y 已填入。確認後可按「檢查我的座標」。`);return;}
+ if(sv){sv.value=fmt(signed);status(`已選取有向正射影 ${fmt(signed)}。確認後可按「檢查我的想法」。`);return;}
+ if(s.step===0){selectFirstGuess(h);return;}
+ if(s.step!==5)handleClick(h,true);
+}
+function showHelpfulHint(){
+ const st=s.step,n=st===6?++s.quizHints[s.quiz]:++s.hints[st];const {al,ang,bl,dot,bb}=compute();
+ if(st===4){
+  const a=n===1?'先回想 cosθ = 鄰邊／斜邊。從圖上，哪個長度是斜邊？':n===2?`目前 |OP|=${fmt(al)}，θ≈${fmt(ang)}°。請先判斷 cosθ 的正負，再想想 |OP|cosθ。`:`你也可以利用內積：a⃗·b⃗=${fmt(dot)}、‖b⃗‖=${fmt(bl)}，有向純量正射影 = (a⃗·b⃗)/‖b⃗‖。`;
+  gentle(a);return;
+ }
+ const a=n===1?'先找出投影直線 ℓ；垂足 H 一定落在這條直線上。':n===2?'從 P 連到你猜的 H，兩條線是否形成 90°？可以拖動 B，觀察直線方向。':`可以先算 a⃗·b⃗=${fmt(dot)}、‖b⃗‖²=${fmt(bb)}，再令 k=(a⃗·b⃗)/‖b⃗‖²，最後得到 H=kb。`;
+ gentle(a);
+}
+function submitCoordinateAnswer(){
+ const x=inputNumber($('answerX').value),y=inputNumber($('answerY').value);
+ if(x===null||y===null){gentle('先填寫 x、y 兩個座標。可以從其中一格開始想，不用急著一次填完。');return;}
+ if(!Number.isFinite(x)||!Number.isFinite(y)){gentle('請輸入數字、小數或分數，例如 -2、1.5、3/2。');return;}
+ const {h,dot,bb}=compute();const xOK=numericalClose(x,h.x),yOK=numericalClose(y,h.y);
+ if(xOK&&yOK){handleClick({x,y},true);return;}
+ s.guess={x,y};draw();
+ if(xOK||yOK){gentle(`${xOK?'x':'y'} 座標的想法是對的，可以保留！再檢查 ${xOK?'y':'x'} 座標：${lineOrPerpHint(s.guess)}`);addAttempt();return;}
+ const first=lineOrPerpHint(s.guess);
+ const second='可以先用兩個條件檢查：H 要在投影直線 ℓ 上，而且 PH 要與 ℓ 垂直。這兩個條件要同時成立。';
+ const third=`如果想用算的，也可以分步算：a⃗·b⃗=${fmt(dot)}，‖b⃗‖²=${fmt(bb)}。先算 k=(a⃗·b⃗)/‖b⃗‖²，再算 H=kb。`;
+ gentle(incrementalTip(first,second,third));
+}
+function submitSignedAnswer(){
+ const v=inputNumber($('signedValue').value);
+ if(v===null){gentle('可以先估計這個影子的方向，再試著把數值寫進框內。');return;}
+ if(!Number.isFinite(v)){gentle('這一格可填整數、小數或分數，例如 3、-2.5、3/2。');return;}
+ const {signed,al,ang,dot,bl}=compute();
+ if(numericalClose(v,signed)){
+  completeStep();clearGuess();draw();showCosResult();return;
+ }
+ let first='你已經把想法寫出來了。先看目前夾角是銳角、直角還是鈍角，再判斷答案的正負號。';
+ if(Math.abs(Math.abs(v)-Math.abs(signed))<.06&&Math.sign(v)!==Math.sign(signed))first='數字大小已經掌握了！只差方向的正負號。觀察 OH 是沿 OB 還是反向。';
+ const second=`目前 |OP|=${fmt(al)}，θ≈${fmt(ang)}°。有向純量正射影要算 |OP|cosθ，留意 cosθ 的正負號。`;
+ const third=`可以換個算法：a⃗·b⃗=${fmt(dot)}，‖b⃗‖=${fmt(bl)}；把 a⃗·b⃗ 除以 ‖b⃗‖ 就能得到有向純量正射影。`;
+ gentle(incrementalTip(first,second,third));
+}
+function stageUI(){const st=s.step,area=$('activity');status();clearGuess();
+ if(st===0){area.innerHTML=`<div class="first-answer-actions"><p class="first-answer-title" id="firstSelection">還沒選擇 H 的位置</p><button type="button" class="primary" id="submitFirstGuess" disabled>送出答案</button><p class="first-answer-help">先在左側座標平面點 H，再按「送出答案」。答錯時會告訴你哪個條件還需要調整。</p></div>`;
+  $('submitFirstGuess').onclick=submitFirstGuess;
+  status(s.done[0]?'本關已完成。你仍然能拖曳向量，或重新點選 H 再挑戰一次。':'請先點選你認為影子會落下的位置，再按「送出答案」。');}
+ if(st===1){area.innerHTML=`<div class="ob-lock-note" id="obLockNote" role="status">🔒 本關先固定橘色 OB。請先找出垂足 H，答對後即可旋轉 OB。</div>${answerFields('coords')}`;bindAnswerFields();updateOBLockNote();}
+ if(st===2){area.innerHTML=`<div class="decomp-activity"><p>請在左側圖上點選兩段向量：先沿投影直線走到 H，再垂直走到 P。</p><div id="componentState" class="component-state"><span class="component-status">① 紫色 OH ○</span><span class="component-status">② 藍色 HP ○</span></div><div id="decompEquation" class="decomp-equation" hidden>${decompMath}</div></div>`;if(!s.done[2])s.componentsSeen.clear();updateComponentState();status('先點紫色 OH，或點藍色 HP；兩段都探索過才會進入下一關。');}
+ if(st===3){area.innerHTML=`<div class="caseinfo" id="caseData"></div>`;
+  const x=compute();updateCasePanel(currentCase(x.ang),x.ang);}
+ if(st===4){area.innerHTML=`${answerFields('signed')}`;bindAnswerFields();}
+ if(st===5){area.innerHTML=`<div id="derive"></div><button class="primary" id="deriveBtn">揭曉第 1 步 →</button>`;
+  $('deriveBtn').onclick=()=>{s.formulaShown=Math.min(3,s.formulaShown+1);renderDerive();if(s.formulaShown===3){success('向量 a⃗ 在向量 b⃗ 上的正射影 = [(a⃗·b⃗)/‖b⃗‖²]b⃗，且 b ≠ 0。');completeStep();draw();}};
+  renderDerive();}
+ if(st===6){renderQuiz();}
+ if(s.done[st]&&st!==6&&st!==5){if(st===0)success('P 的「垂直影子」是垂足 H，且 PH 與投影直線成直角。');if(st===1)success('垂足 H 同時滿足 H 位於直線 ℓ 上、PH ⟂ ℓ。');if(st===2)success(`你已找到兩個向量：${decompMath}紫色 OH 是正射影向量，藍色 HP 是垂直分量。`);if(st===3)success('銳角的有向投影為正，直角為 0，鈍角為負。');if(st===4)showCosResult();}
+ if(s.done[5]&&st===5)success('向量 a⃗ 在向量 b⃗ 上的正射影 = [(a⃗·b⃗)/‖b⃗‖²]b⃗，且 b ≠ 0。');
+}
+function showCosResult(){const {al,ang,signed,h}=compute();
+ success(`向量長度 |OP|=${fmt(al)}，cos θ=${fmt(Math.cos(ang*Math.PI/180))}，因此有向純量正射影 = |OP|cos θ = <strong>${fmt(signed)}</strong>；實際長度 |OH|=${fmt(Math.abs(signed))}，垂足 H=${fmtPt(h)}。<div style="margin-top:5px">你可以繼續拖曳向量，觀察 θ 與投影長度的變化。</div>`);}
+function mathVector(name){
+ const atom=[...name].map(ch=>`<mi mathvariant="normal">${ch}</mi>`).join('');
+ return `<mover accent="true"><mrow>${atom}</mrow><mo stretchy="true">→</mo></mover>`;
+}
+function mathNorm(name){return `<mrow><mo stretchy="false">‖</mo>${mathVector(name)}<mo stretchy="false">‖</mo></mrow>`;}
+function mathML(body,inline=false){return `<math xmlns="http://www.w3.org/1998/Math/MathML" ${inline?'':'display="block"'}>${body}</math>`;}
+const decompMath=mathML(`${mathVector('OP')}<mo>=</mo>${mathVector('OH')}<mo>+</mo>${mathVector('HP')}`);
+const aMath=mathVector('a'),bMath=mathVector('b'),naMath=mathNorm('a'),nbMath=mathNorm('b');
+const abMath=`<mrow>${aMath}<mo>·</mo>${bMath}</mrow>`;
+const cosMath=`<mrow><mi mathvariant="normal">cos</mi><mi>θ</mi></mrow>`;
+function renderDerive(){
+ const n=s.formulaShown,out=$('derive');if(!out)return;
+ let html=`<div class="breakdown"><strong>已知內積公式：</strong><div class="mathline math-equation">${mathML(`${abMath}<mo>=</mo>${naMath}${nbMath}${cosMath}`)}</div></div>`;
+ if(n>=1)html+=`<div class="mathbox"><span class="smalllabel">第 1 步：換掉 cos θ</span><div class="mathline math-equation">${mathML(`${naMath}${cosMath}<mo>=</mo><mfrac>${abMath}${nbMath}</mfrac>`)}</div><div class="under">得到沿向量 b 方向的「有向純量正射影」。</div></div>`;
+ if(n>=2)html+=`<div class="mathbox"><span class="smalllabel">第 2 步：把純量變成向量</span><div class="under">向量 b 的單位方向向量：</div><div class="mathline math-equation">${mathML(`<mfrac>${bMath}${nbMath}</mfrac>`)}</div><div class="under">有向純量正射影乘上單位方向向量。</div></div>`;
+ if(n>=3)html+=`<div class="mathbox final-formula"><span class="smalllabel">第 3 步：合併公式</span><div class="formula-name">${mathML(`<mtext>向量 </mtext>${aMath}<mtext> 在向量 </mtext>${bMath}<mtext> 上的正射影</mtext>`,true)}</div><div class="mathline math-equation">${mathML(`<mo>=</mo><mfrac>${abMath}<msup>${nbMath}<mn>2</mn></msup></mfrac><mo>×</mo>${bMath}`)}</div><div class="under">此處 a 代表 OP、b 代表 OB，兩者皆為向量；b 不能是零向量。內積為負時，投影方向與 b 相反。</div></div>`;
+ out.innerHTML=html;
+ const btn=$('deriveBtn');if(n===3){btn.textContent='三步推導完成 ✓';btn.disabled=true}else btn.textContent=`揭曉第 ${n+1} 步 →`;
+}
+function renderQuiz(){const area=$('activity');area.innerHTML=`<div class="caseinfo" id="quizData"></div>${answerFields('coords')}<div class="smallrow"><button class="secondary" id="quizPrev" ${s.quiz===0?'disabled':''}>← 前一題</button><button class="primary" id="quizNext" ${s.quizDone[s.quiz]?'':'disabled'}>${s.quiz===2?'完成學習 ✓':'下一題 →'}</button></div>`;
+ updateQuizPanel();bindAnswerFields();
+ $('quizPrev').onclick=()=>{if(s.quiz>0){s.quiz--;resetExercise();renderQuiz();draw();reportLessonProgress();}};
+ $('quizNext').onclick=()=>{if(!s.quizDone[s.quiz])return;if(s.quiz<2){s.quiz++;resetExercise();renderQuiz();draw();reportLessonProgress();}else{completeStep();$('quizNext').disabled=true;status('三題已完成！你已學會在平面上找垂足與正射影向量。','good');}};
+ if(s.quizDone[s.quiz])success(`本題已通過。${solutionNow()} 你仍可拖曳 P、B 觀察投影如何改變，或按「下一題」。`);else status('可以先試著輸入 H 的座標，或直接點左側座標平面，或在 H 向量出現後點它的座標標籤填入。');}
+function solutionNow(){const {dot,bb,coef,h}=compute();return `目前 a⃗·b⃗=${fmt(dot)}，‖b⃗‖²=${fmt(bb)}，k=(a⃗·b⃗)/‖b⃗‖²=${fmt(coef)}，H=kb=${fmtPt(h)}。`;}
+function resetExercise(){const q=exercise[s.quiz];s.a={x:q.a[0],y:q.a[1]};s.b={x:q.b[0],y:q.b[1]};clearGuess();}
+function selectFirstGuess(coord){
+ s.guess={x:snap(coord.x),y:snap(coord.y)};
+ s.firstSubmitted=false;
+ const button=$('submitFirstGuess');if(button)button.disabled=false;
+ const selection=$('firstSelection');if(selection)selection.textContent=`已選 H ${fmtPt(s.guess)} · 點「送出答案」檢查`; 
+ draw();
+  status(''); // First question: keep feedback hidden until the student submits.
+}
+function submitFirstGuess(){
+ if(s.step!==0)return;
+ if(!s.guess){status('先在左側座標平面點選你猜的 H，再按送出答案。');return;}
+ const guess={...s.guess},{h}=compute(),geom=guessGeometry(guess);
+ const d=Math.hypot(guess.x-h.x,guess.y-h.y);
+ s.firstSubmitted=true;
+ const btn=$('submitFirstGuess');if(btn)btn.disabled=true;
+ if(d<=0.32&&geom.lineDist<=0.24){
+   clearGuess();completeStep();draw();
+   const selection=$('firstSelection');if(selection)selection.textContent='✓ 找到垂足 H！可以再點選或拖曳探索';
+   success(`你找對了！H=${fmtPt(h)} 同時符合兩個條件：<strong>H 位於投影直線 ℓ 上，且 PH ⟂ ℓ。</strong> 你可以繼續拖曳 P 或 B，觀察新的垂足位置，或前往下一關。`);
+   return;
+ }
+ addAttempt();
+ if(!geom.onLine){
+   gentle(`<strong>第一個問題：H 還沒有落在投影直線上。</strong> 你選的 H=${fmtPt(guess)} 離直線 ℓ 還有一小段距離。請先把 H 移到經過 O、B 的整條直線上，再按「送出答案」。`);
+ }else{
+   gentle(`<strong>已完成第一個條件：H 在投影直線上！</strong> 接著要找真正的垂足。目前 PH 與投影直線的較小夾角約 ${fmt(geom.lineAngle)}°，目標是 <strong>90°</strong>。試著沿著直線移動 H，讓 PH 恰好垂直。`);
+ }
+ draw();
+}
+function handleClick(coord,fromInput=false){const st=s.step;
+ if(st===5)return;
+ if(st===2){status('這一關不是重找 H，請直接點選圖上的「紫色 OH」與「藍色 HP」兩段向量。');return;}
+ if(st===3&&!s.done[3]&&compute().ang<=97){status('先拖動綠色 P，使 OP 與 OB 的夾角成為「鈍角」（大於 90°），再來點出垂足 H。你可以先觀察 H 是否跑到 O 的反方向。','try');return;}
+ const {h,ang,bl}=compute();s.guess={x:fromInput?coord.x:snap(coord.x),y:fromInput?coord.y:snap(coord.y)};
+ const d=Math.hypot(s.guess.x-h.x,s.guess.y-h.y);
+ const tolerance=fromInput?.07:st===0?.7:st===1?.56:st===6?.52:.6;
+ if(d<=tolerance){clearGuess();if(st===6){const firstTime=!s.quizDone[s.quiz];s.quizDone[s.quiz]=true;reportLessonProgress();
+   const {dot,bb,signed}=compute();const c=exercise[s.quiz];
+   success(`${firstTime?'本題已解鎖下一題。':'你又找到新的投影點了！'} ${solutionNow()}<div style="margin-top:5px">你仍可拖曳 P、B 觀察變化，或按「下一題」。</div>`);
+   $('quizNext').disabled=false;
+   if(s.quizDone.every(Boolean))completeStep();
+  }else{completeStep();
+   if(st===0)success(`正射影是沿著與直線 ℓ 垂直的方向投下的影子。H=${fmtPt(h)}，而 PH ⟂ ℓ。<div style="margin-top:5px">你可以繼續拖曳 P 或 B，再試一次新的位置。</div>`);
+   if(st===1)success(`垂足 H=${fmtPt(h)}。它位於 ℓ 上，而且 PH 與 ℓ 夾 90°。<div style="margin-top:5px">答對後也能繼續拖曳，觀察新的垂足。</div>`);
+   if(st===2)success(`從 O 指向 H=${fmtPt(h)} 的 OH 才是正射影向量；HP 是垂直分量。<div style="margin-top:5px">你可以繼續移動向量，重新辨認 H、OH、PH。</div>`);
+   if(st===3)success(`現在夾角約 ${fmt(ang)}°（鈍角），有向正射影為 ${fmt(compute().signed)}，所以 OH 指向 OB 的反方向。<div style="margin-top:5px">你可以再拖動 P，比較銳角、直角與鈍角。</div>`);
+   if(st===4)showCosResult();
+  }
+ }else{
+  const geom=guessGeometry(s.guess);
+  let first=lineOrPerpHint(s.guess);
+  let second=st===2?'這一關的答案仍然是垂足 H，只是你要把它理解成向量 OH 的終點。先找到 H，再看從 O 指向 H 的紫色箭頭。':st===3?'先確認夾角已超過 90°。鈍角時，垂足 H 會落在 O 的另一側，正射影方向也會反向。':st===4?'先決定 H 在哪裡，再回想有向純量正射影和 |OP|cosθ 的關係。':st===6?'可以先讓 H 回到投影直線上，再用 k=(a⃗·b⃗)/‖b⃗‖² 算出它的精確位置。':'從 P 連到你選的 H，看看它和投影直線是否形成 90°。';
+  let third=st===6?'可以把 a⃗、b⃗ 的座標代入公式：k=(a⃗·b⃗)/‖b⃗‖²，再算 H=kb。':st===4?'如果要用算的，可以先求 |OP|cosθ；也可用內積 (a⃗·b⃗)/‖b⃗‖。':st===3?'拖動 P 比較看看：銳角、直角、鈍角時，H 會落在直線的哪一側？':'記得關鍵只有兩個：H 在投影直線上，且 PH 與投影直線垂直。';
+  if(geom.onLine && !geom.nearPerp){second='很好，H 已經在投影直線上了！現在只差最後一步：要找「垂直點」，也就是讓 PH 和投影直線成 90°。';}
+  gentle(incrementalTip(first,second,third));
+
+ }
+ draw();}
+function resetStep(){const st=s.step;s.a=st===1?{x:1,y:3}:{x:3,y:4};s.b=st===1?{x:4,y:2}:{x:5,y:0};clearGuess();if(st===0)s.firstSubmitted=false;
+ if(st===3)s.casesSeen=new Set();if(st===6)resetExercise();}
+function render(){const cfg=steps[s.step];$('stepKicker').textContent=`互動探索 · 0${s.step+1} / 07`;
+ $('stepTitle').textContent=cfg.title;$('stepDesc').textContent=cfg.desc;
+ $('promptTitle').textContent=cfg.q;$('promptIntro').textContent=cfg.intro;
+ $('graphTitle').textContent=s.step<=1?'在座標平面上找影子':'拖曳向量・點選作答';
+ resetStep();stageUI();draw();updateNav();updateTeacherPanel();}
+function fillList(id,items){const el=$(id);el.replaceChildren();items.forEach(item=>{const li=document.createElement('li');li.textContent=item;el.append(li);});}
+function updateTeacherPanel(){const panel=$('teacherPanel');panel.hidden=!s.teacher;if(!s.teacher)return;const note=teacherNotes[s.step];$('teacherQuote').innerHTML=note.quote;$('teacherGoal').textContent=note.goal;$('teacherAsk').textContent=note.ask;fillList('teacherPitfall',note.pitfalls);fillList('teacherMove',note.moves);}
+function updateNav(){const nav=$('stepbar');nav.replaceChildren();steps.forEach((step,i)=>{let b=document.createElement('button');b.className='steptab'+(i===s.step?' current':'')+(s.done[i]?' done':'');b.disabled=!s.teacher&&i!==s.step&&!s.done[i]&&!(i>0&&s.done[i-1]);b.innerHTML=`<b>${s.done[i]?'✓':i+1}</b><span>${step.key}</span>`;b.title=`第 ${i+1} 關：${step.title}`;b.setAttribute('aria-label',b.title);if(i===s.step)b.setAttribute('aria-current','step');b.onclick=()=>go(i);nav.append(b);});
+ $('progressText').textContent=`第 ${s.step+1} 關，共 7 關 · 已完成 ${s.done.filter(Boolean).length}/7`;
+ $('prevBtn').disabled=s.step===0;$('nextBtn').disabled=!s.teacher&&!s.done[s.step];$('nextBtn').textContent=s.step===6?'重新開始 ↺':'下一關 →';
+ $('navStatus').textContent=s.done[s.step]?'本關完成 ✓，可以進入下一關。':s.teacher?'教師模式：可自由切換關卡。':'在圖上完成互動任務，就能解鎖下一關。';}
+function go(i){if(i<0||i>=7)return;if(!s.teacher&&i!==s.step&&!s.done[i]&&!(i>0&&s.done[i-1]))return;s.step=i;render();reportLessonProgress();window.scrollTo({top:Math.max(0,$('stepTitle').getBoundingClientRect().top+window.scrollY-110),behavior:'smooth'});}
+$('prevBtn').onclick=()=>go(s.step-1);
+$('nextBtn').onclick=()=>{if(s.step===6){s.done.fill(false);s.quizDone=[false,false,false];s.quiz=0;s.formulaShown=0;s.casesSeen=new Set();s.misses.fill(0);s.quizMisses.fill(0);s.hints.fill(0);s.quizHints.fill(0);s.step=0;render();reportLessonProgress();window.scrollTo({top:0,behavior:'smooth'});}else go(s.step+1);};
+$('teacherMode').onchange=e=>{s.teacher=teacherCapability&&e.target.checked;if(e.target.checked&&!teacherCapability)e.target.checked=false;updateNav();updateTeacherPanel();};
+window.lessonSetTeacherCapability=(allowed)=>{
+ teacherCapability=allowed===true;
+ const toggle=$('teacherMode');
+ if(!teacherCapability){toggle.checked=false;s.teacher=false;}
+ toggle.disabled=!teacherCapability;
+ updateNav();updateTeacherPanel();
+};
+function convertPointer(e){const mat=svg.getScreenCTM();if(!mat)return null;const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return coords(p.matrixTransform(mat.inverse()));}
+let active=null;
+svg.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const tip=e.target.closest('[data-drag]');if(s.step===1&&!s.done[1]&&tip?.getAttribute('data-drag')==='b'){status('先讓 OB 固定，找出垂足 H。完成後就可以拖曳橘色 B 來旋轉。');return;}const hTap=e.target.closest('[data-h-vector]');const cTap=e.target.closest('[data-component]');const mode=tip?tip.getAttribute('data-drag'):cTap?('component-'+cTap.getAttribute('data-component')):hTap?('h-'+hTap.getAttribute('data-h-vector')):'click';active={id:e.pointerId,mode,x:e.clientX,y:e.clientY,moved:false};svg.setPointerCapture(e.pointerId);e.preventDefault();});
+svg.addEventListener('pointermove',e=>{if(!active||active.id!==e.pointerId)return;
+ if(Math.hypot(e.clientX-active.x,e.clientY-active.y)>5)active.moved=true;
+ if(!active.moved||(active.mode!=='a'&&active.mode!=='b'))return;
+ let p=convertPointer(e);if(!p)return;const x=snap(clamp(p.x,-7.5,7.5)),y=snap(clamp(p.y,-5.25,5.25));
+ if(active.mode==='a')s.a={x,y};
+ if(active.mode==='b'&&Math.hypot(x,y)>.8&&!(s.step===1&&!s.done[1]))s.b={x,y};
+ clearGuess();clearAnswerFields();draw();
+ if(s.step===0){
+   const btn=$('submitFirstGuess');if(btn)btn.disabled=true;
+   const selection=$('firstSelection');if(selection)selection.textContent='向量已改變，請重新點選 H';
+   if(s.done[0])solvedExploreNotice();
+   else status('向量已移動。請重新點選現在的影子位置，再按「送出答案」。');
+ }else if((s.step!==6&&s.done[s.step])||(s.step===6&&s.quizDone[s.quiz]))solvedExploreNotice();});
+svg.addEventListener('pointerup',e=>{if(!active||active.id!==e.pointerId)return;const a=active;active=null;try{svg.releasePointerCapture(e.pointerId);}catch{}
+  if(!a.moved){
+   if(a.mode==='h-fill'||a.mode==='h-select'){if(s.step===2)selectComponent('parallel');else fillFromHVector();}
+   else if(a.mode==='component-perp')selectComponent('perp');
+   else if(a.mode==='click'){const p=convertPointer(e);if(p){if(s.step===0)selectFirstGuess(p);else handleClick(p);}}
+  }
+});
+svg.addEventListener('pointercancel',()=>active=null);
+svg.addEventListener('lostpointercapture',()=>active=null);
+function updateResponsiveGraph(){
+ svg.setAttribute('viewBox',window.innerWidth<=610?'75 0 665 520':'0 0 760 520');
+}
+window.addEventListener('resize',updateResponsiveGraph);
+
+function reportLessonProgress(){if(window.PortalBridge && window.PortalBridge.onProgressChange)window.PortalBridge.onProgressChange(window.lessonReadProgress());}
+window.lessonReadProgress=()=>({
+ done:s.done.slice(),
+ quizDone:s.quizDone.slice(),
+ currentStep:s.step,
+ quizIndex:s.quiz,
+ completedCount:s.done.filter(Boolean).length
+});
+window.lessonApplyProgress=(p)=>{
+ if(!p||typeof p!=='object')return;
+ if(Array.isArray(p.done)&&p.done.length===7)s.done=p.done.map(v=>v===true);
+ if(Array.isArray(p.quizDone)&&p.quizDone.length===3)s.quizDone=p.quizDone.map(v=>v===true);
+ if(Number.isInteger(p.currentStep))s.step=Math.max(0,Math.min(6,p.currentStep));
+ if(Number.isInteger(p.quizIndex))s.quiz=Math.max(0,Math.min(2,p.quizIndex));
+ render();
+};
+
+updateResponsiveGraph();setupGrid();render();
+})();
+</script>
+<script>
+// 正射影互動教學｜Firebase Web App 公開設定
+// 專案：ponrj-3bbca
+// 此設定用於初始化 Firebase Web SDK；資料存取權由 Firestore 規則控制。
+// 請勿將 Firebase 管理員私鑰、Service Account JSON 放進網站。
+window.PROJECTION_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDEYROvMvyqw595K2yLhRbpR3TvdR0c5Bs",
+  authDomain: "ponrj-3bbca.firebaseapp.com",
+  projectId: "ponrj-3bbca",
+  storageBucket: "ponrj-3bbca.firebasestorage.app",
+  messagingSenderId: "73243538303",
+  appId: "1:73243538303:web:dcae48897ed985388f204a",
+  measurementId: "G-7WYMBRQEX3"
+};
+</script>
+<script type="module">
+// 正射影登入系統：Firebase Auth + Cloud Firestore
+// 未配置 Firebase 時，顯示明確的設定畫面；不提供假登入或假的進度儲存。
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, signOut
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+import {
+  getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+
+const $ = id => document.getElementById(id);
+const stageNames = ['影子在哪裡','直角與垂足','拆成兩個向量','方向和正負','連結三角比','形成公式','實作練習'];
+const state = {
+  auth: null, db: null, user: null, profile: null,
+  role: null, registering: false, authSeq: 0,
+  teacherProfiles: new Map(), teacherProgress: new Map(),
+  unsubscribers: [], saveTimer: null, saveChain: Promise.resolve(),
+  allowingSave: false, view: 'lesson'
+};
+const config = window.PROJECTION_FIREBASE_CONFIG;
+// 只有「帳號識別」在網頁內，密碼由 Firebase Authentication 伺服器驗證。
+// 這個 .example.com 信箱僅供 demo 專用、無實際收信能力；管理員在 Firebase Console 直接建立帳號。
+const SHARED_DEMO = Object.freeze({username: 'ntnumath', email: 'ntnumath@demo.example.com'});
+function resolveLoginIdentifier(input){
+ const normalized=String(input||'').trim();
+ return normalized.toLowerCase()===SHARED_DEMO.username ? SHARED_DEMO.email : normalized;
+}
+
+function show(element, visible = true){if(element)element.hidden = !visible;}
+function showById(id, visible = true){show($(id), visible);}
+function setAuthMessage(text = ''){const el = $('authMessage');el.textContent = text;show(el,!!text);}
+function setSaveStatus(text){$('portalSaveStatus').textContent = text;}
+function errorText(error){
+ const code = error?.code || '';
+ const map = {
+  'auth/invalid-credential':'帳號或密碼不正確，請再確認一次。',
+  'auth/user-not-found':'查無此帳號，請確認電子郵件。',
+  'auth/wrong-password':'密碼不正確，請再試一次。',
+  'auth/email-already-in-use':'這個電子郵件已註冊，請直接登入。',
+  'auth/weak-password':'密碼太短，請至少輸入 6 個字元。',
+  'auth/invalid-email':'電子郵件格式有誤。',
+  'auth/too-many-requests':'嘗試次數過多，請稍後再試。',
+  'auth/unauthorized-domain':'Firebase 尚未授權這個 Netlify 網址，請在 Authentication 的「已授權網域」新增網站網域。',
+  'permission-denied':'資料庫拒絕存取，請確認 Firestore 安全規則及教師權限。',
+  'unavailable':'暫時無法連線，請確認網路後再試。'
+ };
+ return map[code] || `操作未完成（${code || error?.message || '未知錯誤'}）。請確認 Firebase 設定與連線。`;
+}
+function setupAuthForm(){
+ const mode = register => {
+  showById('loginForm', !register);
+  showById('registerForm', register);
+  $('tabLogin').classList.toggle('active',!register);
+  $('tabRegister').classList.toggle('active',register);
+  setAuthMessage('');
+ };
+ $('tabLogin').addEventListener('click',()=>mode(false));
+ $('tabRegister').addEventListener('click',()=>mode(true));
+ $('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=$('loginSubmit');btn.disabled=true;setAuthMessage('');
+  try{
+   await signInWithEmailAndPassword(state.auth,resolveLoginIdentifier($('loginEmail').value),$('loginPassword').value);
+   $('loginPassword').value='';
+  }catch(err){setAuthMessage(errorText(err));}
+  finally{btn.disabled=false;}
+ });
+ $('registerForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=$('registerSubmit');btn.disabled=true;setAuthMessage('');
+  const name=$('registerName').value.trim(), className=$('registerClass').value.trim();
+  const email=$('registerEmail').value.trim(), password=$('registerPassword').value;
+  if(!name||!className||!email||password.length<6){setAuthMessage('請完成姓名、班級、電子郵件及至少 6 碼密碼。');btn.disabled=false;return;}
+  state.registering=true;
+  let registeredUser=null;
+  try{
+   const result=await createUserWithEmailAndPassword(state.auth,email,password);
+   registeredUser=result.user;
+   await setDoc(doc(state.db,'users',registeredUser.uid),{
+    role:'student', name, className, email:registeredUser.email,
+    createdAt:serverTimestamp()
+   });
+   $('registerPassword').value='';
+   state.registering=false;
+   await startSession(registeredUser);
+  }catch(err){
+   state.registering=false;
+   setAuthMessage(errorText(err));
+   if(registeredUser){try{await signOut(state.auth);}catch(_){}}
+  }finally{btn.disabled=false;}
+ });
+ $('portalLogout').addEventListener('click',async()=>{
+  try{if(state.saveTimer){clearTimeout(state.saveTimer);state.saveTimer=null;await saveNow();}await signOut(state.auth);}catch(err){setSaveStatus(errorText(err));}
+ });
+ $('showTeacherDashboard').addEventListener('click',()=>switchView('teacher'));
+ $('showLessonPreview').addEventListener('click',()=>switchView('lesson'));
+ $('teacherSearch').addEventListener('input',renderTeacherDashboard);
+ $('teacherClass').addEventListener('change',renderTeacherDashboard);
+ $('exportCsv').addEventListener('click',exportCsv);
+}
+function showGate(){
+ showById('authScreen',true);
+ showById('portalBar',false);
+ showById('lessonShell',false);
+ showById('teacherDashboard',false);
+ showById('authLoading',false);
+ showById('authPanel',true);
+}
+function cleanupTeacherListeners(){for(const fn of state.unsubscribers){try{fn();}catch(_){}}state.unsubscribers=[];state.teacherProfiles.clear();state.teacherProgress.clear();}
+function clearSession(){
+ cleanupTeacherListeners();
+ state.authSeq++;
+ state.allowingSave=false;
+ if(state.saveTimer){clearTimeout(state.saveTimer);state.saveTimer=null;}
+ state.user=null;state.profile=null;state.role=null;
+ document.body.classList.remove('role-student','role-teacher','role-demo','portal-ready');
+ showById('demoNotice',false);
+ if(typeof window.lessonSetTeacherCapability==='function')window.lessonSetTeacherCapability(false);
+}
+async function startSession(user){
+ const seq=++state.authSeq;
+ showById('authLoading',true);showById('authPanel',false);showById('authSetup',false);
+ showById('authScreen',true);showById('portalBar',false);showById('lessonShell',false);showById('teacherDashboard',false);
+ try{
+  const profileDoc=await getDoc(doc(state.db,'users',user.uid));
+  if(seq!==state.authSeq)return;
+  if(!profileDoc.exists()){
+   showGate();setAuthMessage('登入成功，但資料庫尚未建立這個 UID 的角色設定。請管理員在 Firestore users／UID 新增 role = demo（演示帳號）或 student（學生帳號）。');return;
+  }
+  const profile=profileDoc.data();
+  // 共用別名不得被當成學生帳號使用，避免不小心寫入正式進度。
+  if(user.email===SHARED_DEMO.email && profile.role!=='demo'){
+   showGate();setAuthMessage('共用演示帳號需要由管理員把 Firestore users／UID 的 role 設為 demo，不能使用學生或教師角色。');return;
+  }
+  if(!['teacher','student','demo'].includes(profile.role)){
+   showGate();setAuthMessage('帳號身分尚未設定，請聯絡網站管理者。');return;
+  }
+  state.user=user;state.profile=profile;state.role=profile.role;
+  document.body.classList.remove('role-student','role-teacher','role-demo');
+  document.body.classList.add('portal-ready','role-'+profile.role);
+  $('portalUserName').textContent=profile.name || user.email || '使用者';
+  $('portalRole').textContent=profile.role==='teacher'?'教師帳號':profile.role==='demo'?'演示帳號':`學生 · ${profile.className||'未填班級'}`;
+  showById('showTeacherDashboard',profile.role==='teacher');
+  showById('showLessonPreview',profile.role==='teacher');
+  showById('demoNotice',profile.role==='demo');
+  if(typeof window.lessonSetTeacherCapability==='function')window.lessonSetTeacherCapability(profile.role==='teacher'||profile.role==='demo');
+  showById('authScreen',false);showById('portalBar',true);
+  if(profile.role==='teacher'){
+   state.allowingSave=false;
+   const toggle=$('teacherMode');toggle.checked=true;toggle.dispatchEvent(new Event('change'));
+   setSaveStatus('教師模式｜唯讀檢視學生進度');
+   switchView('teacher');
+   watchStudents();
+  }else if(profile.role==='demo'){
+   // Demo users see only the lesson. Do not read or write any progress documents.
+   state.allowingSave=false;
+   if(typeof window.lessonApplyProgress==='function')window.lessonApplyProgress({
+     done:Array(7).fill(false),quizDone:Array(3).fill(false),currentStep:0,quizIndex:0
+   });
+   const toggle=$('teacherMode');toggle.checked=true;toggle.dispatchEvent(new Event('change'));
+   setSaveStatus('演示模式 · 不讀取學生資料 · 不儲存進度');
+   switchView('lesson');
+  }else{
+   state.allowingSave=false;
+   setSaveStatus('讀取上次進度…');
+   const saved=await getDoc(doc(state.db,'progress',user.uid));
+   if(seq!==state.authSeq)return;
+   if(saved.exists()&&typeof window.lessonApplyProgress==='function')window.lessonApplyProgress(saved.data());
+   const toggle=$('teacherMode');toggle.checked=false;toggle.dispatchEvent(new Event('change'));
+   state.allowingSave=true;
+   switchView('lesson');
+   if(!saved.exists())await saveNow();
+   else setSaveStatus('已載入上次進度 ✓');
+  }
+ }catch(error){
+  if(seq!==state.authSeq)return;
+  showGate();setAuthMessage(errorText(error));
+ }
+}
+function switchView(target){
+ const teacher=state.role==='teacher';
+ const teacherView=teacher&&target==='teacher';
+ state.view=teacherView?'teacher':'lesson';
+ showById('teacherDashboard',teacherView);
+ showById('lessonShell',!teacherView);
+ $('showTeacherDashboard').classList.toggle('active',teacherView);
+ $('showLessonPreview').classList.toggle('active',teacher&&!teacherView);
+ if(!teacherView&&teacher)setSaveStatus('教材預覽：此操作不會寫入學生進度');
+ else if(teacher)setSaveStatus('教師儀表板 · 即時資料');
+ else if(state.role==='demo')setSaveStatus('演示模式 · 不讀取學生資料 · 不儲存進度');
+}
+function savePayload(){
+ const current=typeof window.lessonReadProgress==='function'?window.lessonReadProgress():null;
+ if(!current)return null;
+ return {
+  uid:state.user.uid,
+  done:current.done.map(Boolean).slice(0,7),
+  quizDone:current.quizDone.map(Boolean).slice(0,3),
+  currentStep:Math.max(0,Math.min(6,Number(current.currentStep)||0)),
+  quizIndex:Math.max(0,Math.min(2,Number(current.quizIndex)||0)),
+  completedCount:current.done.filter(Boolean).length,
+  updatedAt:serverTimestamp()
+ };
+}
+async function saveNow(){
+ if(!state.user||state.role!=='student'||!state.allowingSave)return;
+ const payload=savePayload(); if(!payload)return;
+ const uid=state.user.uid;
+ setSaveStatus('正在儲存…');
+ state.saveChain=state.saveChain.catch(()=>{}).then(()=>setDoc(doc(state.db,'progress',uid),payload,{merge:true}));
+ try{
+  await state.saveChain;
+  if(state.user?.uid===uid)setSaveStatus('進度已儲存 ✓');
+ }catch(error){if(state.user?.uid===uid)setSaveStatus('儲存失敗：請確認網路／資料庫規則');}
+}
+window.PortalBridge={
+ onProgressChange(){
+  if(!state.allowingSave||state.role!=='student')return;
+  if(state.saveTimer)clearTimeout(state.saveTimer);
+  state.saveTimer=setTimeout(()=>{state.saveTimer=null;void saveNow();},500);
+ }
+};
+window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&state.saveTimer){clearTimeout(state.saveTimer);state.saveTimer=null;void saveNow();}});
+
+function watchStudents(){
+ cleanupTeacherListeners();
+ state.unsubscribers.push(onSnapshot(collection(state.db,'users'),snapshot=>{
+  state.teacherProfiles=new Map(snapshot.docs.filter(d=>d.data().role==='student').map(d=>[d.id,d.data()]));
+  updateClassOptions();renderTeacherDashboard();
+ },error=>{$('teacherNotice').textContent='讀取學生名單失敗：'+errorText(error);}));
+ state.unsubscribers.push(onSnapshot(collection(state.db,'progress'),snapshot=>{
+  state.teacherProgress=new Map(snapshot.docs.map(d=>[d.id,d.data()]));
+  renderTeacherDashboard();
+ },error=>{$('teacherNotice').textContent='讀取學生進度失敗：'+errorText(error);}));
+}
+function updateClassOptions(){
+ const select=$('teacherClass'),current=select.value;
+ const classes=[...new Set([...state.teacherProfiles.values()].map(p=>p.className||'未分類'))].sort((a,b)=>a.localeCompare(b,'zh-TW'));
+ select.replaceChildren();
+ select.add(new Option('所有班級',''));
+ for(const c of classes)select.add(new Option(c,c));
+ select.value=classes.includes(current)?current:'';
+}
+function studentList(){
+ const queryText=$('teacherSearch').value.trim().toLowerCase(),className=$('teacherClass').value;
+ return [...state.teacherProfiles.entries()].map(([uid,profile])=>{
+  const p=state.teacherProgress.get(uid)||{};
+  const done=Array.isArray(p.done)?p.done.map(Boolean).slice(0,7):Array(7).fill(false);
+  const quizDone=Array.isArray(p.quizDone)?p.quizDone.map(Boolean).slice(0,3):Array(3).fill(false);
+  return {uid, name:profile.name||'未命名',email:profile.email||'',className:profile.className||'未分類',done,quizDone,
+   completed:done.filter(Boolean).length,currentStep:Number.isInteger(p.currentStep)?Math.max(0,Math.min(6,p.currentStep)):0,
+   lastActive:p.updatedAt?.toDate?.()||null};
+ }).filter(x=>(!className||x.className===className)&&(!queryText||[x.name,x.email,x.className].some(t=>t.toLowerCase().includes(queryText))))
+ .sort((a,b)=>(b.lastActive?.getTime()||0)-(a.lastActive?.getTime()||0)||a.name.localeCompare(b.name,'zh-TW'));
+}
+function renderTeacherDashboard(){
+ const students=studentList(), total=students.length, finished=students.filter(s=>s.completed===7).length;
+ $('statTotal').textContent=String(total);
+ $('statFinished').textContent=String(finished);
+ $('statActive').textContent=String(students.filter(s=>s.completed>0&&s.completed<7).length);
+ $('statAverage').textContent=(total?Math.round(students.reduce((n,s)=>n+s.completed,0)/(total*7)*100):0)+'%';
+ $('teacherEmpty').hidden=total>0;
+ const tbody=$('studentRows');tbody.replaceChildren();
+ for(const student of students){
+  const tr=document.createElement('tr');
+  const tdName=tr.insertCell();
+  const name=document.createElement('div');name.className='student-name';name.textContent=student.name;tdName.append(name);
+  const email=document.createElement('small');email.className='student-email';email.textContent=student.email;tdName.append(email);
+  tr.insertCell().textContent=student.className;
+  const tdProgress=tr.insertCell();
+  const pct=Math.round(student.completed/7*100);
+  const counter=document.createElement('span');counter.className='progress-pct';counter.textContent=`${student.completed}/7 關 · ${pct}%`;tdProgress.append(counter);
+  const bar=document.createElement('div');bar.className='progress-bar';bar.setAttribute('role','progressbar');bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','7');bar.setAttribute('aria-valuenow',String(student.completed));
+  const fill=document.createElement('i');fill.style.width=pct+'%';bar.append(fill);tdProgress.append(bar);
+  const stage=tr.insertCell();
+  const tag=document.createElement('span');tag.className='dash-tag';tag.textContent=student.completed===7?'全部完成':`第 ${student.currentStep+1} 關 · ${stageNames[student.currentStep]}`;stage.append(tag);
+  tr.insertCell().textContent=student.lastActive?student.lastActive.toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'尚未開始';
+  const tdDetails=tr.insertCell();
+  const button=document.createElement('button');button.type='button';button.className='detail-btn';button.textContent='各關明細';tdDetails.append(button);
+  tbody.append(tr);
+  const extra=document.createElement('tr');extra.hidden=true;const detailsCell=extra.insertCell();detailsCell.colSpan=6;
+  const detail=document.createElement('div');detail.className='student-detail';
+  for(let i=0;i<7;i++){
+   const span=document.createElement('span');span.className=student.done[i]?'done':'';span.textContent=`${student.done[i]?'✓':'○'} ${i+1}. ${stageNames[i]}`;detail.append(span);
+  }
+  const quiz=document.createElement('p');quiz.style.margin='8px 0 0';quiz.textContent=`第 7 關練習：${student.quizDone.map(x=>x?'✓':'○').join(' ／ ')}（這是操作完成紀錄，不是正式考試成績）`;detail.append(quiz);detailsCell.append(detail);tbody.append(extra);
+  button.addEventListener('click',()=>{extra.hidden=!extra.hidden;button.textContent=extra.hidden?'各關明細':'收合明細';});
+ }
+}
+function exportCsv(){
+ const rows=[['姓名','電子郵件','班級','已完成關數','完成率','目前關卡','最近活動',...stageNames.map((n,i)=>`第${i+1}關：${n}`),'練習1','練習2','練習3']];
+ for(const x of studentList())rows.push([x.name,x.email,x.className,x.completed,Math.round(x.completed/7*100)+'%',x.currentStep+1,x.lastActive?x.lastActive.toLocaleString('zh-TW'):'',...x.done.map(d=>d?'完成':'未完成'),...x.quizDone.map(d=>d?'完成':'未完成')]);
+ const csv='\uFEFF'+rows.map(row=>row.map(value=>'"'+String(value).replaceAll('"','""')+'"').join(',')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob);
+ const anchor=document.createElement('a');anchor.href=url;anchor.download='正射影學生進度_'+new Date().toISOString().slice(0,10)+'.csv';anchor.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+setupAuthForm();
+const configured=config&&typeof config.apiKey==='string'&&config.apiKey.length>8&&!config.apiKey.includes('YOUR_')&&typeof config.projectId==='string'&&!config.projectId.includes('YOUR_')&&typeof config.appId==='string'&&!config.appId.includes('YOUR_');
+if(!configured){
+ showById('authLoading',false);showById('authSetup',true);showById('authPanel',false);
+}else{
+ try{
+  const app=initializeApp(config);
+  state.auth=getAuth(app);
+  state.db=getFirestore(app);
+  onAuthStateChanged(state.auth,async user=>{
+   if(state.registering)return;
+   if(!user){clearSession();showGate();setAuthMessage('');}
+   else await startSession(user);
+  },error=>{clearSession();showGate();setAuthMessage(errorText(error));});
+ }catch(error){showById('authLoading',false);showById('authSetup',true);$('authSetup').querySelector('p').textContent='Firebase 設定無法啟用：'+errorText(error);}
+}
+
+</script>
+</body>
+</html>

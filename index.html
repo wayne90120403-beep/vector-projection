@@ -410,6 +410,26 @@ function updateGraphLegend(){
  el.innerHTML=item('a','OP：原向量')+item('b','OB：參考方向')+item('h','OH：正射影向量');
 }
 function currentCase(ang){if(ang<83)return '銳角';if(ang>97)return '鈍角';return '直角';}
+function drawRightAngleMark(pH,pA,unit){
+ // 使用畫面像素單位組成小正方形，無論 OB 水平、傾斜或反向都固定可讀。
+ const u={x:unit.x,y:-unit.y};
+ const d={x:pA.x-pH.x,y:pA.y-pH.y};
+ const n=Math.hypot(d.x,d.y);
+ if(n<5)return; // P 已經在線上時，PH 長度為 0，沒有必要畫直角符號。
+ const v={x:d.x/n,y:d.y/n};
+ const z=19;
+ const a={x:pH.x+z*u.x,y:pH.y+z*u.y};
+ const b={x:a.x+z*v.x,y:a.y+z*v.y};
+ const c={x:pH.x+z*v.x,y:pH.y+z*v.y};
+ const points=`${a.x},${a.y} ${b.x},${b.y} ${c.x},${c.y}`;
+ // 淺紫底+白色描邊襯底，讓直角在橘色投影軸上也清楚。
+ mk('polygon',{points:`${pH.x},${pH.y} ${a.x},${a.y} ${b.x},${b.y} ${c.x},${c.y}`,
+   fill:'#eee7ff','fill-opacity':.94,'pointer-events':'none','aria-hidden':'true'});
+ mk('polyline',{points,fill:'none',stroke:'#fff','stroke-width':7,
+   'stroke-linecap':'round','stroke-linejoin':'round','pointer-events':'none','aria-hidden':'true'});
+ mk('polyline',{points,fill:'none',stroke:'#6855a8','stroke-width':3.1,
+   'stroke-linecap':'round','stroke-linejoin':'round','pointer-events':'none','aria-hidden':'true'});
+}
 function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct,bb,bl}=compute(),a=s.a,b=s.b;
  const pA=xy(a.x,a.y),pB=xy(b.x,b.y),pH=xy(h.x,h.y),unit={x:b.x/bl,y:b.y/bl};
  line(xy(-unit.x*17,-unit.y*17),xy(unit.x*17,unit.y*17),{stroke:st<=1?'#9baebe':'#bda5e6','stroke-width':st<=1?3.1:3,'stroke-dasharray':st<=1?'':'9 7'});
@@ -420,11 +440,9 @@ function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct
    line(pA,pH,{stroke:'#ffffff','stroke-width':6,'stroke-linecap':'round',class:'teacher-guide'});
    line(pA,pH,{stroke:'#7e75b9','stroke-width':3.1,'stroke-dasharray':'8 7','stroke-linecap':'round',class:'teacher-guide'});
  }
- if(showFoot&&st>=1){line(pA,pH,{stroke:'#8a81bb','stroke-width':3,'stroke-dasharray':'8 7'});
-  const dx=a.x-h.x,dy=a.y-h.y,dlen=Math.hypot(dx,dy);
-  if(dlen>.12){const v={x:dx/dlen,y:dy/dlen},z=.3;
-   const p1=xy(h.x+unit.x*z,h.y+unit.y*z),p2=xy(h.x+(unit.x+v.x)*z,h.y+(unit.y+v.y)*z),p3=xy(h.x+v.x*z,h.y+v.y*z);
-   mk('polyline',{points:`${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`,fill:'none',stroke:COLORS.h,'stroke-width':2.2});}}
+ if(showFoot&&st>=1){line(pA,pH,{stroke:'#8a81bb','stroke-width':3,'stroke-dasharray':'8 7'});}
+ // 直角記號統一在 P→H 的垂線與 OB 所在直線交會處繪製；僅在正確答案揭示後顯示。
+ // 刻意等到橘色 OB 和綠色 OP 向量都畫好後才畫，避免記號被箭頭蓋住。
  if(s.guess){
   const gp=xy(s.guess.x,s.guess.y);line(pA,gp,{stroke:COLORS.guess,'stroke-width':3,'stroke-dasharray':'6 6',opacity:.85});
   dot(gp,{r:8.5,fill:'#fff4e8',stroke:COLORS.guess,'stroke-width':2.8});
@@ -456,6 +474,7 @@ function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct
  }
 
  line(xy(0,0),pA,{stroke:COLORS.a,'stroke-width':5.2,'stroke-linecap':'round','marker-end':'url(#mA)'});
+ if(showFoot)drawRightAngleMark(pH,pA,unit);
  dot(xy(0,0),{r:5,fill:'#435c77',stroke:'#fff','stroke-width':2});label({x:O.x-17,y:O.y+25},'O',{'font-size':16,'text-anchor':'end'});
  if(showFoot){
   dot(pH,{r:10,fill:COLORS.h,stroke:'#fff','stroke-width':3,'data-h-vector':'fill','aria-label':'點選垂足 H 帶入座標'});

@@ -153,6 +153,29 @@ body:not(.portal-ready) #lessonShell{display:none}
 .ob-lock-note{margin:0 0 13px;border:1px solid #d9e3ee;border-radius:12px;background:#f3f7fc;color:#34556e;padding:12px 14px;font-size:14px;font-weight:730;line-height:1.75}
 .ob-lock-note.unlocked{border-color:#b6dfcf;background:#eef9f4;color:#176c52}
 @media(max-width:610px){.math-equation{font-size:clamp(16px,4vw,20px)}.mathbox{padding:10px 11px}.decomp-equation{padding:12px 5px}.decomp-equation math{font-size:20px}.ob-lock-note{font-size:13px}}
+
+/* 第一關作答後才揭示幾何輔助線，第二關答對後的座標標籤 */
+.graphwrap svg .teacher-guide{pointer-events:none}
+.quiz-rotate{margin:12px 0;padding:14px;border:1px solid #cbdfe9;background:#f7fbff;border-radius:13px}
+.quiz-rotate-head{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap;font-size:14px;color:#274e67}
+.quiz-rotate-head strong{font-size:14px}
+.quiz-rotate-value{font-size:13px;font-variant-numeric:tabular-nums;color:#245b75;background:#e7f2fa;border-radius:999px;padding:4px 10px;font-weight:800}
+.quiz-rotate-control{width:100%;margin:14px 0 4px;accent-color:#087f78;cursor:pointer;touch-action:pan-x;height:28px}
+.quiz-rotate-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.quiz-rotate-actions button{min-height:44px;flex:1;padding:9px 12px}
+.quiz-rotate-description{font-size:12.5px;color:#617889;line-height:1.65;margin:8px 0 0}
+@media(max-width:610px){.quiz-rotate{padding:12px;margin:10px 0}.quiz-rotate-control{height:35px}.quiz-rotate-actions button{font-size:14px}}
+
+/* 不在學生送出前顯示錯誤提示或提示按鈕 */
+#feedback[hidden],#hintButton[hidden]{display:none!important}
+/* 圖上作答：圖旁就能快速送出，不需捲動到表單。 */
+.graph-answer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;background:#f0f8fb;border-top:1px solid #d7e8f0;border-bottom:1px solid #d7e8f0}
+.graph-answer-bar[hidden]{display:none!important}
+.graph-answer-copy{flex:1 1 180px;min-width:0;font-size:14px;font-weight:700;color:#34596e;line-height:1.5}
+.graph-submit,.graph-clear{border-radius:11px;min-height:48px;font-size:15px;font-weight:800;padding:9px 18px;border:1px solid transparent}
+.graph-submit{background:#087f78;color:white}.graph-submit:hover:not(:disabled){background:#066d68}
+.graph-submit:disabled{opacity:.5;cursor:not-allowed}.graph-clear{background:white;color:#48667b;border-color:#cddde8}
+@media(max-width:610px){.graph-answer-bar{gap:9px;padding:12px}.graph-answer-copy{flex-basis:100%;font-size:15px}.graph-submit{flex:2}.graph-clear{flex:1}.graph-submit,.graph-clear{min-height:50px}}
 </style>
 </head>
 <body>
@@ -226,7 +249,11 @@ body:not(.portal-ready) #lessonShell{display:none}
 <main class="container">
 <section class="lessonhead"><span class="eyebrow" id="stepKicker">觀察 · 01</span><h2 id="stepTitle"></h2><p id="stepDesc"></p></section>
 <div class="layout">
-<section class="card" aria-label="互動幾何畫板"><div class="graphheader"><strong id="graphTitle">互動幾何圖</strong><div class="legend"><span><i class="ldot a"></i>OP：原向量</span><span><i class="ldot b"></i>OB：投影方向</span><span><i class="ldot h"></i>OH：正射影</span></div></div><div class="graphwrap"><svg id="plot" viewBox="0 0 760 520" role="img" aria-label="可拖曳向量 P、B 並點選座標位置作答的互動直角座標平面"><defs><marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#087f78"/></marker><marker id="mB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#dc843d"/></marker><marker id="mH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#7461be"/></marker><marker id="mHP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#2b96b5"/></marker></defs><rect width="760" height="520" fill="#fdfefe"/><g id="grid"></g><g id="geometry"></g></svg></div><div class="graphcaption" id="graphCaption" aria-live="polite"></div></section>
+<section class="card" aria-label="互動幾何畫板"><div class="graphheader"><strong id="graphTitle">互動幾何圖</strong><div class="legend" id="graphLegend" aria-live="polite"></div></div><div class="graphwrap"><svg id="plot" viewBox="0 0 760 520" role="img" aria-label="可拖曳向量 P、B 並點選座標位置作答的互動直角座標平面"><defs><marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#087f78"/></marker><marker id="mB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#dc843d"/></marker><marker id="mH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#7461be"/></marker><marker id="mHP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#2b96b5"/></marker></defs><rect width="760" height="520" fill="#fdfefe"/><g id="grid"></g><g id="geometry"></g></svg></div><div class="graph-answer-bar" id="graphAnswerBar" hidden>
+  <div class="graph-answer-copy" id="graphAnswerText">在圖上點出你認為的 H</div>
+  <button type="button" id="submitGraphGuess" class="graph-submit" disabled>送出這個點</button>
+  <button type="button" id="clearGraphGuess" class="graph-clear" disabled>重選</button>
+</div><div class="graphcaption" id="graphCaption" aria-live="polite"></div></section>
 <section class="card instruction"><div class="questionkicker"><span>✦</span> 想一想，再揭曉</div><h3 id="promptTitle"></h3><p class="qintro" id="promptIntro"></p><div id="activity"></div><div id="feedback" class="msg" role="status" aria-live="polite">依照指示進行操作。</div></section>
 </div>
 <div class="navfooter"><div id="navStatus" class="navstatus">完成這一關，即可解鎖下一關。</div><div class="navbuttons"><button class="secondary" id="prevBtn">← 上一關</button><button class="primary" id="nextBtn" disabled>下一關 →</button></div></div>
@@ -261,13 +288,13 @@ const NS='http://www.w3.org/2000/svg';
 const O={x:375,y:270}, K=43;
 const COLORS={a:'#087f78',b:'#dc843d',h:'#7461be',guess:'#cc6a32',ink:'#405b75'};
 const steps=[
-{key:'影子在哪裡',title:'想像一個「垂直落下的影子」',desc:'先觀察圖形，不急著學公式。試著用滑鼠或手指，在直角座標平面上找出影子的位置。',q:'點 P 在直線 ℓ 上的垂直影子，會落在哪個位置？',intro:'不用選選項：直接點一下左邊座標平面，送出你猜的影子位置。',tip:'先問「影子一定在直線上嗎？」再讓學生用點選來預測。這裡特指垂直投影，與一般斜射光線的影子不同。'},
-{key:'直角與垂足',title:'影子為什麼落在這裡？',desc:'把影子和原來的點 P 連起來，觀察這段線與地面形成的角度。',q:'先保持 OB 的方向不變，你能找出垂足 H 嗎？',intro:'請先在座標平面點選 H，或輸入 H 的座標。找對之後才開放拖曳 B，旋轉投影直線。',tip:'先將 OB 固定，讓學生集中思考垂足條件：H 在 ℓ 上、PH ⟂ ℓ；找對後再旋轉 OB，理解垂足會隨著直線方向改變。'},
+{key:'影子在哪裡',title:'先找出影子的位置',desc:'先從影子的概念出發，在座標平面上猜測點 P 投到直線 ℓ 的位置；這一關不需要公式。',q:'點 P 的影子落在直線 ℓ 的哪個位置？',intro:'請在圖中點選影子 H，再按「送出答案」；不需要先計算。',tip:'先問「影子一定在直線上嗎？」再讓學生用點選來預測。這裡特指垂直投影，與一般斜射光線的影子不同。'},
+{key:'直角與垂足',title:'為什麼影子落在這裡？',desc:'接著研究影子位置的幾何條件：H 位於直線 ℓ 上，而且 PH 與 ℓ 垂直。',q:'先保持 OB 的方向不變，你能找出垂足 H 嗎？',intro:'請先在座標平面點選 H，或輸入 H 的座標。找對之後才開放拖曳 B，旋轉投影直線。',tip:'先將 OB 固定，讓學生集中思考垂足條件：H 在 ℓ 上、PH ⟂ ℓ；找對後再旋轉 OB，理解垂足會隨著直線方向改變。'},
 {key:'拆成兩個向量',title:'一個向量，可以拆成兩個方向嗎？',desc:'第二關已經找到垂足。這一關不再重找 H，而是把原向量 OP 拆成「沿投影直線」與「垂直投影直線」兩段。',q:'在圖上依序點選紫色 OH 和藍色 HP，看看兩個向量如何接成 OP。',intro:'先點紫色 OH，再點藍色 HP。兩個方向都觀察完，就能理解正射影向量到底是哪一段。',tip:'關鍵是 向量 OP = 向量 OH + 向量 HP 的向量加法。PH 是垂線段；作向量分解時應使用從 H 指向 P 的 HP，不能把方向寫反。'},
 {key:'方向和正負',title:'正射影可能往反方向嗎？',desc:'直接拖動 P，觀察 OP 與 OB 之間夾角的變化，以及垂足在 O 的哪一側。',q:'請把 P 拖到使夾角變成「鈍角」，再點出 H 在哪裡。',intro:'沒有選項；請親手移動向量。也可以試試銳角和直角時，影子朝向哪一邊。',tip:'當夾角為鈍角，有向純量正射影為負，但線段 OH 的長度仍是非負數。讓學生比較銳角、直角、鈍角。'},
 {key:'連結三角比',title:'用 cos θ 算出影子的有向長度',desc:'先從 OP = (3,4) 的 3–4–5 直角三角形出發，再延伸到其他圖形。',q:'OP 在 OB 方向上的「有向純量正射影」是多少？',intro:'先看圖形，再輸入數值；也能在座標平面點出 H 來驗證你的想法。',tip:'銳角範例可以由 cos θ = 鄰邊/斜邊導出 ‖a⃗‖cos θ；再用有向的 cos θ 統一銳角、直角、鈍角。'},
 {key:'形成公式',title:'將幾何想法一步步寫成公式',desc:'既然已知道影子方向與長度，接下來只要把 cos θ 換成內積，再乘上單位方向向量。',q:'請先任意拖動 P、B，再逐步揭開正射影公式。',intro:'拖動橘色 B 會旋轉投影直線，垂足 H 與正射影向量 OH 會同步改變。',tip:'關鍵是 a⃗·b⃗=‖a⃗‖‖b⃗‖cosθ，有向純量正射影=(a⃗·b⃗)/‖b⃗‖，最後再乘上 b⃗/‖b⃗‖；b 不能為零向量。'},
-{key:'實作練習',title:'在座標平面上找出真正的答案',desc:'最後三題都不提供選項。請根據向量座標計算，再直接點出正射影向量的終點 H。',q:'計算正射影後，請輸入 H 的座標。',intro:'你可以輸入 x、y，或直接在圖上點 H。系統會幫你檢查思路，不會因為一次失誤就卡關。',tip:'三題依序為水平正向、水平負向、斜向投影。學生須在網格上點出 H，並解釋向量正射影與純量正射影的差別。'}
+{key:'實作練習',title:'在座標平面上找出真正的答案',desc:'最後三題都不提供選項。請根據向量座標計算，再直接點出正射影向量的終點 H。',q:'計算正射影後，請輸入 H 的座標。',intro:'你可以輸入 x、y 座標，或直接在座標平面上點選 H，再送出答案。',tip:'三題依序為水平正向、水平負向、斜向投影。學生須在網格上點出 H，並解釋向量正射影與純量正射影的差別。'}
 ];
 const teacherNotes=[
 {quote:'先不要給公式，先讓學生回答：<b>「影子一定要落在哪裡？」</b>',goal:'讓學生建立「正射影先是一個幾何現象」的直觀：影子會落在投影直線 ℓ 上，而且是從 P 對 ℓ 作垂線所得到的位置。',ask:'你現在不是在算答案，而是在判斷「影子應該落在哪裡」。請先確認兩件事：第一，它要在直線 ℓ 上；第二，從 P 連過去要和 ℓ 垂直。',pitfalls:['把影子理解成任意方向的照射，而忽略這裡是「垂直投影」。','只看左右位置或遠近，沒有檢查是否真的落在直線 ℓ 上。'],moves:['先讓學生隨意點一次，再追問：你為什麼選這裡？','學生答錯時，不直接給答案，而是請他檢查「有沒有在直線上」與「是不是 90°」。']},
@@ -286,7 +313,7 @@ const exercise=[
 ];
 let teacherCapability=false; // Only the authenticated teacher/demo role may turn on quick navigation.
 const s={step:0,done:Array(7).fill(false),teacher:false,a:{x:3,y:4},b:{x:5,y:0},guess:null,
- shownProjection:false,firstSubmitted:false,formulaShown:0,quiz:0,quizDone:[false,false,false],casesSeen:new Set(),misses:Array(7).fill(0),quizMisses:[0,0,0],hints:Array(7).fill(0),quizHints:[0,0,0],activeField:'x',componentsSeen:new Set()};
+ shownProjection:false,firstSubmitted:false,formulaShown:0,quiz:0,quizDone:[false,false,false],casesSeen:new Set(),misses:Array(7).fill(0),quizMisses:[0,0,0],hints:Array(7).fill(0),quizHints:[0,0,0],activeField:'x',componentsSeen:new Set(),quizRotation:0,feedbackReady:false,selectedViaPlot:false};
 const svg=$('plot'),grid=$('grid'),g=$('geometry');
 const mk=(tag,attrs={},parent=g)=>{const node=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,String(v));parent.append(node);return node};
 const line=(p,q,attrs={},parent=g)=>mk('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:'#86a0b4','stroke-width':2,...attrs},parent);
@@ -305,10 +332,23 @@ function pointLineDistance(pt,b=s.b){const bl=Math.hypot(b.x,b.y)||1;return Math
 function rayParameter(pt,b=s.b){const bb=b.x*b.x+b.y*b.y||1;return (pt.x*b.x+pt.y*b.y)/bb;}
 function guessGeometry(pt=s.guess){const {bl}=compute();const lineDist=pointLineDistance(pt);const onLine=lineDist<=0.22;const fromP={x:pt.x-s.a.x,y:pt.y-s.a.y};const norm=Math.hypot(fromP.x,fromP.y);const u={x:s.b.x/bl,y:s.b.y/bl};const lineAngle=norm>.02?Math.acos(clamp(Math.abs((u.x*fromP.x+u.y*fromP.y)/norm),0,1))*180/Math.PI:0;const nearPerp=Math.abs(lineAngle-90)<=8;return {lineDist,onLine,lineAngle,nearPerp,rayT:rayParameter(pt)};}
 function lineOrPerpHint(pt=s.guess,extra=''){const g=guessGeometry(pt);if(!g.onLine)return `點 H 要在投影直線上。先把 H 移到 OB 所在的投影直線 ℓ 上，再觀察它的位置。${extra}`;return `你選的 H 已經在線上了，做得很好！接下來要找「垂直點」：從 P 連到 H 的線要和投影直線成 90°。${extra}`;}
-function status(html='',klass=''){const el=$('feedback');el.hidden=s.step===0&&!s.firstSubmitted;el.innerHTML=html||'在左側座標平面點選位置作答。';el.className='msg'+(klass?' '+klass:'');}
-function success(html){status('<strong>你發現了：</strong> '+html,'good');}
+function status(html='',klass=''){
+ const el=$('feedback');
+ const needsSubmission=[0,1,3,4,6].includes(s.step);
+ el.hidden=needsSubmission&&!s.feedbackReady;
+ el.innerHTML=html||'在左側座標平面點選位置作答。';
+ el.className='msg'+(klass?' '+klass:'');
+}
+function showSubmissionFeedback(){s.feedbackReady=true;}
+function concealSubmissionFeedback(){
+ s.feedbackReady=false;
+ const el=$('feedback');if(el)el.hidden=[0,1,3,4,6].includes(s.step);
+ const hint=$('hintButton');if(hint)hint.hidden=true;
+}
+
+function success(html){showSubmissionFeedback();const hint=$('hintButton');if(hint)hint.hidden=true;status('<strong>你發現了：</strong> '+html,'good');}
 function solvedExploreNotice(){const st=s.step,{h,ang,signed,dot,bb,al}=compute();
- if(st===0)success(`你已找對垂足 H=${fmtPt(h)}。記得：H 在直線 ℓ 上，而且 PH 與 ℓ 垂直。<div style="margin-top:5px">你可以繼續拖曳 P 或 B，再觀察 H 會不會跟著改變。</div>`);
+ if(st===0)success(`你找到點 P 的影子了：H=${fmtPt(h)}。請繼續拖曳 P 或 B，觀察影子的位置如何改變。下一關再研究為什麼會落在這裡。`);
  else if(st===1)success(`你已找到垂足 H=${fmtPt(h)}。判準是：H 在 ℓ 上，且 PH ⟂ ℓ。<div style="margin-top:5px">你可以繼續拖曳 P 或 B，重新測試新的圖形。</div>`);
  else if(st===2&&s.done[2])success(`已完成向量分解：${decompMath}你仍可拖曳向量觀察。`);
  else if(st===3)success(`你已完成本關探索。目前夾角約 ${fmt(ang)}°（${currentCase(ang)}），有向正射影為 ${fmt(signed)}。<div style="margin-top:5px">你可以繼續拖動 P，比較銳角、直角、鈍角時的投影方向。</div>`);
@@ -333,25 +373,60 @@ function selectComponent(which){
  }
  draw();
 }
-function clearGuess(){s.guess=null;}
+function clearGuess(){s.guess=null;s.selectedViaPlot=false;updateGraphQuickBar();}
+function updateGraphQuickBar(){
+ const bar=$('graphAnswerBar');if(!bar)return;
+ const enabled=[0,1,3,4,6].includes(s.step);
+ bar.hidden=!enabled;
+ if(!enabled)return;
+ const selected=Boolean(s.guess);
+ $('graphAnswerText').textContent=selected?`已選 H ${fmtPt(s.guess)}，可以直接送出`:'在圖上點選你認為的 H';
+ $('submitGraphGuess').disabled=!selected;
+ $('clearGraphGuess').disabled=!selected;
+}
+function submitGraphGuess(){
+ if(!s.guess)return;
+ if(s.step===0){submitFirstGuess();return;}
+ if([1,3,4,6].includes(s.step)){handleClick({...s.guess},false);return;}
+}
+$('submitGraphGuess').addEventListener('click',submitGraphGuess);
+$('clearGraphGuess').addEventListener('click',()=>{
+ clearGuess();clearAnswerFields();concealSubmissionFeedback();draw();
+ if(s.step===0){const btn=$('submitFirstGuess');if(btn)btn.disabled=true;const text=$('firstSelection');if(text)text.textContent='還沒選擇 H 的位置';}
+ const btn=$('submitAngleGuess');if(btn)btn.disabled=true;
+});
 function setupGrid(){grid.replaceChildren();for(let x=-8;x<=8;x++){const px=xy(x,0).x;line({x:px,y:0},{x:px,y:520},{stroke:x===0?'#bdccd9':'#edf1f5','stroke-width':x===0?1.8:1},grid);if(x!==0)labelInGrid(px,O.y+21,String(x));}
  for(let y=-6;y<=6;y++){const py=xy(0,y).y;line({x:0,y:py},{x:760,y:py},{stroke:y===0?'#bdccd9':'#edf1f5','stroke-width':y===0?1.8:1},grid);if(y!==0&&Math.abs(y)<=5)labelInGrid(O.x+17,py+5,String(y));}}
 function labelInGrid(x,y,t){const n=mk('text',{x,y,'text-anchor':'middle','font-family':'system-ui,Microsoft JhengHei,sans-serif','font-size':12,'font-weight':600,fill:'#8a9cb0','pointer-events':'none'},grid);n.textContent=t;}
 function footVisible(){const st=s.step;if(st===0&&s.guess)return false;if(st===0||st===1||st===4)return s.done[st];if(st===6)return s.quizDone[s.quiz];return true;}
-function projectionVisible(){const st=s.step;if(st===0&&s.guess)return false;if(st===0||st===1||st===4)return s.done[st];if(st===6)return s.quizDone[s.quiz];return true;}
+// The vector OH is introduced for the first time in lesson 3.
+function projectionVisible(){const st=s.step;if(st<2)return false;if(st===4)return s.done[st];if(st===6)return s.quizDone[s.quiz];return true;}
+function updateGraphLegend(){
+ const st=s.step,el=$('graphLegend');if(!el)return;
+ const item=(color,name)=>`<span><i class="ldot ${color}"></i>${name}</span>`;
+ if(st===0){el.innerHTML=item('a','P：物體的位置')+item('b','ℓ：影子所在的直線')+(footVisible()?item('h','H：影子的位置'):'');return;}
+ if(st===1){el.innerHTML=item('a','P：原來的點')+item('b','ℓ：投影直線')+(footVisible()?item('h','H：垂足'):'');return;}
+ if(st===2){el.innerHTML=item('a','OP：原向量')+item('h','OH：沿直線的分量')+'<span><i class="ldot" style="background:#2b96b5"></i>HP：垂直分量</span>';return;}
+ el.innerHTML=item('a','OP：原向量')+item('b','OB：參考方向')+item('h','OH：正射影向量');
+}
 function currentCase(ang){if(ang<83)return '銳角';if(ang>97)return '鈍角';return '直角';}
 function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct,bb,bl}=compute(),a=s.a,b=s.b;
  const pA=xy(a.x,a.y),pB=xy(b.x,b.y),pH=xy(h.x,h.y),unit={x:b.x/bl,y:b.y/bl};
  line(xy(-unit.x*17,-unit.y*17),xy(unit.x*17,unit.y*17),{stroke:st<=1?'#9baebe':'#bda5e6','stroke-width':st<=1?3.1:3,'stroke-dasharray':st<=1?'':'9 7'});
  if(st<=1)label({x:26,y:246},'投影直線 ℓ',{'font-size':13,fill:'#68869d'});
  const showFoot=footVisible();
- if(showFoot){line(pA,pH,{stroke:'#8a81bb','stroke-width':2.5,'stroke-dasharray':'7 6'});
+ // 第一關只在送出正確答案後標示影子 H 和從 P 到 H 的虛線；不揭露垂直角或向量。
+ if(st===0&&showFoot){
+   line(pA,pH,{stroke:'#ffffff','stroke-width':6,'stroke-linecap':'round',class:'teacher-guide'});
+   line(pA,pH,{stroke:'#7e75b9','stroke-width':3.1,'stroke-dasharray':'8 7','stroke-linecap':'round',class:'teacher-guide'});
+ }
+ if(showFoot&&st>=1){line(pA,pH,{stroke:'#8a81bb','stroke-width':3,'stroke-dasharray':'8 7'});
   const dx=a.x-h.x,dy=a.y-h.y,dlen=Math.hypot(dx,dy);
   if(dlen>.12){const v={x:dx/dlen,y:dy/dlen},z=.3;
    const p1=xy(h.x+unit.x*z,h.y+unit.y*z),p2=xy(h.x+(unit.x+v.x)*z,h.y+(unit.y+v.y)*z),p3=xy(h.x+v.x*z,h.y+v.y*z);
    mk('polyline',{points:`${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`,fill:'none',stroke:COLORS.h,'stroke-width':2.2});}}
- if(s.guess&&(st===0||!((st===6&&s.quizDone[s.quiz])||(st!==6&&s.done[st])))){
-  const gp=xy(s.guess.x,s.guess.y);line(pA,gp,{stroke:COLORS.guess,'stroke-width':2.3,'stroke-dasharray':'5 6',opacity:.72});
+ if(s.guess){
+  const gp=xy(s.guess.x,s.guess.y);line(pA,gp,{stroke:COLORS.guess,'stroke-width':3,'stroke-dasharray':'6 6',opacity:.85});
   dot(gp,{r:8.5,fill:'#fff4e8',stroke:COLORS.guess,'stroke-width':2.8});
   label({x:gp.x+10,y:gp.y+24},'H',{'font-size':18,fill:'#a8582e',stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
   label({x:gp.x+10,y:gp.y+42},fmtPt(s.guess),{'font-size':12,fill:'#a8582e',stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
@@ -383,7 +458,21 @@ function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct
  line(xy(0,0),pA,{stroke:COLORS.a,'stroke-width':5.2,'stroke-linecap':'round','marker-end':'url(#mA)'});
  dot(xy(0,0),{r:5,fill:'#435c77',stroke:'#fff','stroke-width':2});label({x:O.x-17,y:O.y+25},'O',{'font-size':16,'text-anchor':'end'});
  if(showFoot){
-  dot(pH,{r:8,fill:COLORS.h,stroke:'#fff','stroke-width':3});
+  dot(pH,{r:10,fill:COLORS.h,stroke:'#fff','stroke-width':3,'data-h-vector':'fill','aria-label':'點選垂足 H 帶入座標'});
+  if(st<2){
+   // 第一關僅標 H；第二關「答對後」才標 H 的座標，不提前揭示答案。
+   if(st===1){
+     const name=`H ${fmtPt(h)}`,width=Math.max(136,name.length*10.4+20);
+     const lx=clamp(pH.x+13,9,750-width),ly=clamp(pH.y+17,12,482);
+     const tag=mk('g',{class:'h-value-chip',role:'button',tabindex:0,'data-h-vector':'fill','aria-label':`點選垂足 ${name}，帶入作答座標`});
+     tag.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();fillFromHVector();}});
+     mk('rect',{x:lx,y:ly,width,height:35,rx:9,fill:'#f1ecff',stroke:'#9e88dd','stroke-width':1.7},tag);
+     const labelText=mk('text',{x:lx+9,y:ly+24,'font-family':'system-ui,Microsoft JhengHei,sans-serif','font-size':15,'font-weight':800,fill:'#6144aa'},tag);
+     labelText.textContent=name;
+   }else{
+     label({x:clamp(pH.x+14,12,733),y:clamp(pH.y-14,24,503)},'H',{'font-size':21,fill:COLORS.h,stroke:'#fff','stroke-width':5,'paint-order':'stroke'});
+   }
+  }else{
   const hText=`H ${fmtPt(h)}`,labelWidth=Math.max(184,40+hText.length*12.8);
   const labelX=clamp(pH.x+12,8,760-labelWidth-8),labelY=st===2?clamp(pH.y+40,8,520-63):clamp(pH.y-106,8,520-63);
   const hGroup=mk('g',{'data-h-vector':'fill','class':'h-value-chip',role:'button',tabindex:0,'aria-label':st===2?'點選紫色正射影向量 OH，辨認平行分量':`紫色正射影向量 OH，終點 ${hText}，點選填入答案`});
@@ -391,25 +480,33 @@ function draw(){g.replaceChildren();const st=s.step,{h,ang,signed,dot:dotProduct
   const hSub=mk('text',{x:labelX+13,y:labelY+19,'font-size':14,'font-weight':750,'font-family':'system-ui,Microsoft JhengHei,sans-serif',fill:'#7255bf','pointer-events':'none'},hGroup);hSub.textContent=st===2?'① 沿投影直線的向量 OH':'正射影向量 OH · 點選';
   const hLabel=mk('text',{x:labelX+13,y:labelY+47,'font-size':26,'font-weight':850,'font-family':'system-ui,Microsoft JhengHei,sans-serif',fill:'#51309c','pointer-events':'none'},hGroup);hLabel.textContent=hText;
   hGroup.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(st===2)selectComponent('parallel');else fillFromHVector();}});
+  }
  }
  dot(pB,{r:7,fill:COLORS.b,stroke:'#fff'});label({x:pB.x+13,y:pB.y-11},'B',{'font-size':19,fill:COLORS.b,stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
  dot(pA,{r:7,fill:COLORS.a,stroke:'#fff'});label({x:pA.x+13,y:pA.y-11},'P',{'font-size':19,fill:COLORS.a,stroke:'#fff','stroke-width':4,'paint-order':'stroke'});
  mk('circle',{cx:pA.x,cy:pA.y,r:35,fill:'transparent','data-drag':'a','aria-label':'拖曳向量 OP 的端點 P',style:'touch-action:none'});
  mk('circle',{cx:pB.x,cy:pB.y,r:35,fill:'transparent','data-drag':'b','aria-label':'拖曳向量 OB 的端點 B',style:'touch-action:none'});
+ // Answer-reveal labels and the H point stay tappable even if an endpoint's drag area overlaps.
+ if(showFoot && st!==0){
+  const chip=g.querySelector('g[data-h-vector="fill"]');if(chip)g.appendChild(chip);
+  mk('circle',{cx:pH.x,cy:pH.y,r:19,fill:'transparent',stroke:'none','data-h-vector':'fill',style:'cursor:pointer','aria-label':'點選 H 帶入座標'});
+ }
  if(st===3){const c=currentCase(ang);s.casesSeen.add(c);updateCasePanel(c,ang);}
  if(st===6)updateQuizPanel();
  let captions=[
- '拖曳綠色 P 或橘色 B，改變向量。接著在網格上點選「影子」應落的位置。',
- '請嘗試不同方向的直線；答對後可以點紫色 H 向量上的座標標籤填入 x、y；也可以繼續拖曳向量觀察。',
+ '拖曳 P 或 B，觀察影子所在的直線。先猜 H 在哪裡，再按「送出答案」。',
+ '先讓 OB 保持固定，在圖上找到垂足 H；答對後才可移動 B，觀察 H 與直角如何改變。',
  st===2&&s.done[2]?'兩段位移接起來，得到原向量：向量 OP = 向量 OH + 向量 HP。繼續拖曳 P、B，觀察分解如何變化。':'先點紫色 OH，再點藍色 HP；想想兩段位移能否接成原向量 OP。',
  '把綠色 P 拖到夾角超過 90°，觀察紫色正射影向量何時朝反方向。',
  '從 3–4–5 開始，也可拖曳向量自行創造三角形，再點出垂足。',
  '拖動向量 P、B 時，垂足 H 及正射影向量 OH 都會即時變化。',
- '請計算現在的兩個向量，並直接在座標平面上點出正射影終點 H。'
+ '依目前顯示的向量座標求出 H；也可用旋轉控制觀察投影，隨時回到固定原題。'
  ][st];
+ if([0,1,3,4,6].includes(st))captions+='　在圖上點 H 後，直接按圖下方的「送出這個點」。';
  if(st===3)captions+=`　目前夾角約 ${fmt(ang)}°，${currentCase(ang)}。`;
  if(st===5&&s.formulaShown===3)captions+=`　目前 a⃗·b⃗=${fmt(dotProduct)}、‖b⃗‖²=${fmt(bb)}、H=${fmtPt(h)}。`;
  $('graphCaption').textContent=captions;
+ updateGraphQuickBar();updateGraphLegend();
 }
 function taskBox(h,p){return `<div class="taskpanel"><div class="tasklabel">${h}</div><p>${p}</p></div>`}
 function updateOBLockNote(){const note=$('obLockNote');if(!note)return;const unlocked=s.done[1];note.textContent=unlocked?'🔓 已找到垂足 H！現在可以拖曳橘色 B，觀察投影直線旋轉後的變化。':'🔒 橘色 OB 目前固定。先點出垂足 H 或輸入座標，答對後才能旋轉 B。';note.classList.toggle('unlocked',unlocked);}
@@ -418,10 +515,10 @@ function updateCasePanel(c,ang){const n=$('caseData');if(!n)return;
  const seen=['銳角','直角','鈍角'].map(x=>`${x}${s.casesSeen.has(x)?' ✓':' ○'}`).join('　');
  n.innerHTML=`<strong>現在的夾角：約 ${fmt(ang)}°（${c}）</strong><div class="under">已探索：${seen}</div>`;}
 function updateQuizPanel(){const n=$('quizData');if(!n)return;
- const a=s.a,b=s.b;n.innerHTML=`<strong>第 ${s.quiz+1} 題：${exercise[s.quiz].name}</strong><div class="mathline" style="font-size:17px">a = ${fmtPt(a)}，b = ${fmtPt(b)}</div><div class="under">可在下方輸入 H 的 x、y，或直接點左側座標平面。拖曳後題目座標會同步更新；答案可用小數或分數。</div>`;}
+ const a=s.a,b=s.b;n.innerHTML=`<strong>第 ${s.quiz+1} 題：${exercise[s.quiz].name}</strong><div class="mathline" style="font-size:17px">a = ${fmtPt(a)}，b = ${fmtPt(b)}</div><div class="under">可在下方輸入 H 的 x、y，或直接點左側座標平面。若旋轉或拖曳向量，題目座標會同步更新；答案可用小數或分數。</div>`;}
 function answerFields(kind){
- if(kind==='signed')return `<div class="answerpanel"><h4>換你寫下答案</h4><p class="inputdesc">請輸入有向純量正射影（有正負號），不是線段 OH 的長度。紫色 H 標籤出現時，可以直接點選向量上的數字。</p><div class="answerfields"><label class="answerfield">有向純量正射影<input id="signedValue" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1.5" aria-label="有向純量正射影"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitSigned">檢查我的想法</button><button class="secondary" type="button" id="hintButton">給我一個小提示</button></div><p class="answerhelp">可以輸入整數、小數或分數，例如 3/2。答對後仍可拖曳向量。</p></div>`;
- return `<div class="answerpanel"><h4>我算出的垂足座標 H</h4><p class="inputdesc">你可以輸入兩個座標，也可以直接在圖上點選；當紫色 H 向量出現時，可直接點 H 的座標標籤填入 x、y。</p><div class="answerfields"><label class="answerfield">x 座標<input id="answerX" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1/2" aria-label="垂足 H 的 x 座標"></label><label class="answerfield">y 座標<input id="answerY" inputmode="decimal" autocomplete="off" placeholder="例如 0 或 1.5" aria-label="垂足 H 的 y 座標"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitCoords">檢查我的座標</button><button class="secondary" type="button" id="hintButton">給我一個小提示</button></div><p class="answerhelp">可使用小數或分數；若只對一個座標，系統會提醒你保留正確的部分。</p></div>`;
+ if(kind==='signed')return `<div class="answerpanel"><h4>換你寫下答案</h4><p class="inputdesc">請輸入有向純量正射影（有正負號），不是線段 OH 的長度。紫色 H 標籤出現時，可以直接點選向量上的數字。</p><div class="answerfields"><label class="answerfield">有向純量正射影<input id="signedValue" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1.5" aria-label="有向純量正射影"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitSigned">送出答案</button><button class="secondary" type="button" id="hintButton" hidden>給我一個小提示</button></div><p class="answerhelp">可以輸入整數、小數或分數，例如 3/2。答對後仍可拖曳向量。</p></div>`;
+ return `<div class="answerpanel"><h4>我算出的垂足座標 H</h4><p class="inputdesc">${s.step===1?'直接點座標平面選 H，圖下方就能送出；也可以輸入 x、y 座標。':'直接點座標平面選 H，圖下方就能送出；也可以輸入 x、y 座標。'}</p><div class="answerfields"><label class="answerfield">x 座標<input id="answerX" inputmode="decimal" autocomplete="off" placeholder="例如 3 或 -1/2" aria-label="垂足 H 的 x 座標"></label><label class="answerfield">y 座標<input id="answerY" inputmode="decimal" autocomplete="off" placeholder="例如 0 或 1.5" aria-label="垂足 H 的 y 座標"></label></div><div class="answerbuttons"><button class="primary" type="button" id="submitCoords">送出答案</button><button class="secondary" type="button" id="hintButton" hidden>給我一個小提示</button></div><p class="answerhelp">答案可輸入整數、小數或分數，例如 -2、1.5、3/2。</p></div>`;
 }
 function inputNumber(raw){
  const v=(raw||'').trim().replace(/[−–]/g,'-').replace(/，/g,'.').replace(/\s+/g,'');
@@ -435,13 +532,14 @@ function inputNumber(raw){
 function numericalClose(a,b,tol=.06){return Number.isFinite(a)&&Math.abs(a-b)<=tol;}
 function addAttempt(){if(s.step===6)return ++s.quizMisses[s.quiz];return ++s.misses[s.step];}
 function incrementalTip(first,second,third){const n=addAttempt();return n===1?first:n===2?second:third;}
-function gentle(message){status(`<strong>再往下一步想想：</strong> ${message}<div style="margin-top:6px">可以繼續調整或拖曳試試看；不扣分，也不用重新開始。</div>`,'try');}
+function gentle(message){showSubmissionFeedback();const hint=$('hintButton');if(hint)hint.hidden=false;status(`<strong>再往下一步想想：</strong> ${message}<div style="margin-top:6px">可以修正答案後再次送出；不必重新開始。</div>`,'try');}
 function bindAnswerFields(){
  const c=$('submitCoords'),a=$('submitSigned'),hint=$('hintButton');
  if(c)c.onclick=submitCoordinateAnswer;
  if(a)a.onclick=submitSignedAnswer;
  if(hint)hint.onclick=showHelpfulHint;
  const x=$('answerX'),y=$('answerY'),sv=$('signedValue');
+ for(const el of [x,y,sv])if(el)el.addEventListener('input',()=>{clearGuess();concealSubmissionFeedback();draw();});
  if(x)x.addEventListener('focus',()=>s.activeField='x');
  if(y)y.addEventListener('focus',()=>s.activeField='y');
  if(sv)sv.addEventListener('focus',()=>s.activeField='signed');
@@ -450,11 +548,14 @@ function bindAnswerFields(){
 function clearAnswerFields(){for(const id of ['answerX','answerY','signedValue']){const el=$(id);if(el)el.value='';}}
 function fillFromHVector(){
  const {h,signed}=compute(),x=$('answerX'),y=$('answerY'),sv=$('signedValue');
- if(x&&y){x.value=fmt(h.x);y.value=fmt(h.y);s.activeField='y';
-  status(`已從紫色正射影向量選取 H=${fmtPt(h)}，x、y 已填入。確認後可按「檢查我的座標」。`);return;}
- if(sv){sv.value=fmt(signed);status(`已選取有向正射影 ${fmt(signed)}。確認後可按「檢查我的想法」。`);return;}
+ if(x&&y){
+  s.guess={...h};s.selectedViaPlot=true;
+  x.value=fmt(h.x);y.value=fmt(h.y);s.activeField='y';
+  concealSubmissionFeedback();draw();return;
+ }
+ if(sv){sv.value=fmt(signed);concealSubmissionFeedback();draw();return;}
  if(s.step===0){selectFirstGuess(h);return;}
- if(s.step!==5)handleClick(h,true);
+ if(s.step!==5)selectUnsubmittedPoint(h);
 }
 function showHelpfulHint(){
  const st=s.step,n=st===6?++s.quizHints[s.quiz]:++s.hints[st];const {al,ang,bl,dot,bb}=compute();
@@ -466,7 +567,10 @@ function showHelpfulHint(){
  gentle(a);
 }
 function submitCoordinateAnswer(){
- const x=inputNumber($('answerX').value),y=inputNumber($('answerY').value);
+ if(s.selectedViaPlot&&s.guess){handleClick({...s.guess},false);return;}
+ const rawX=$('answerX').value.trim(),rawY=$('answerY').value.trim();
+ if(!rawX&&!rawY&&s.guess){handleClick({...s.guess});return;}
+ const x=inputNumber(rawX),y=inputNumber(rawY);
  if(x===null||y===null){gentle('先填寫 x、y 兩個座標。可以從其中一格開始想，不用急著一次填完。');return;}
  if(!Number.isFinite(x)||!Number.isFinite(y)){gentle('請輸入數字、小數或分數，例如 -2、1.5、3/2。');return;}
  const {h,dot,bb}=compute();const xOK=numericalClose(x,h.x),yOK=numericalClose(y,h.y);
@@ -479,7 +583,9 @@ function submitCoordinateAnswer(){
  gentle(incrementalTip(first,second,third));
 }
 function submitSignedAnswer(){
- const v=inputNumber($('signedValue').value);
+ const raw=$('signedValue').value.trim();
+ if(!raw&&s.guess){handleClick({...s.guess});return;}
+ const v=inputNumber(raw);
  if(v===null){gentle('可以先估計這個影子的方向，再試著把數值寫進框內。');return;}
  if(!Number.isFinite(v)){gentle('這一格可填整數、小數或分數，例如 3、-2.5、3/2。');return;}
  const {signed,al,ang,dot,bl}=compute();
@@ -492,20 +598,21 @@ function submitSignedAnswer(){
  const third=`可以換個算法：a⃗·b⃗=${fmt(dot)}，‖b⃗‖=${fmt(bl)}；把 a⃗·b⃗ 除以 ‖b⃗‖ 就能得到有向純量正射影。`;
  gentle(incrementalTip(first,second,third));
 }
-function stageUI(){const st=s.step,area=$('activity');status();clearGuess();
- if(st===0){area.innerHTML=`<div class="first-answer-actions"><p class="first-answer-title" id="firstSelection">還沒選擇 H 的位置</p><button type="button" class="primary" id="submitFirstGuess" disabled>送出答案</button><p class="first-answer-help">先在左側座標平面點 H，再按「送出答案」。答錯時會告訴你哪個條件還需要調整。</p></div>`;
+function stageUI(){const st=s.step,area=$('activity');concealSubmissionFeedback();status();clearGuess();
+ if(st===0){area.innerHTML=`<div class="first-answer-actions"><p class="first-answer-title" id="firstSelection">還沒選擇 H 的位置</p><button type="button" class="primary" id="submitFirstGuess" disabled>送出答案</button><p class="first-answer-help">先在左側座標平面選擇 H 的位置，再按「送出答案」。</p></div>`;
   $('submitFirstGuess').onclick=submitFirstGuess;
   status(s.done[0]?'本關已完成。你仍然能拖曳向量，或重新點選 H 再挑戰一次。':'請先點選你認為影子會落下的位置，再按「送出答案」。');}
  if(st===1){area.innerHTML=`<div class="ob-lock-note" id="obLockNote" role="status">🔒 本關先固定橘色 OB。請先找出垂足 H，答對後即可旋轉 OB。</div>${answerFields('coords')}`;bindAnswerFields();updateOBLockNote();}
  if(st===2){area.innerHTML=`<div class="decomp-activity"><p>請在左側圖上點選兩段向量：先沿投影直線走到 H，再垂直走到 P。</p><div id="componentState" class="component-state"><span class="component-status">① 紫色 OH ○</span><span class="component-status">② 藍色 HP ○</span></div><div id="decompEquation" class="decomp-equation" hidden>${decompMath}</div></div>`;if(!s.done[2])s.componentsSeen.clear();updateComponentState();status('先點紫色 OH，或點藍色 HP；兩段都探索過才會進入下一關。');}
- if(st===3){area.innerHTML=`<div class="caseinfo" id="caseData"></div>`;
+ if(st===3){area.innerHTML=`<div class="caseinfo" id="caseData"></div><div class="smallrow"><button type="button" class="primary" id="submitAngleGuess" disabled>送出答案</button></div>`;
+  $('submitAngleGuess').onclick=()=>{if(s.guess)handleClick({...s.guess});};
   const x=compute();updateCasePanel(currentCase(x.ang),x.ang);}
  if(st===4){area.innerHTML=`${answerFields('signed')}`;bindAnswerFields();}
  if(st===5){area.innerHTML=`<div id="derive"></div><button class="primary" id="deriveBtn">揭曉第 1 步 →</button>`;
   $('deriveBtn').onclick=()=>{s.formulaShown=Math.min(3,s.formulaShown+1);renderDerive();if(s.formulaShown===3){success('向量 a⃗ 在向量 b⃗ 上的正射影 = [(a⃗·b⃗)/‖b⃗‖²]b⃗，且 b ≠ 0。');completeStep();draw();}};
   renderDerive();}
  if(st===6){renderQuiz();}
- if(s.done[st]&&st!==6&&st!==5){if(st===0)success('P 的「垂直影子」是垂足 H，且 PH 與投影直線成直角。');if(st===1)success('垂足 H 同時滿足 H 位於直線 ℓ 上、PH ⟂ ℓ。');if(st===2)success(`你已找到兩個向量：${decompMath}紫色 OH 是正射影向量，藍色 HP 是垂直分量。`);if(st===3)success('銳角的有向投影為正，直角為 0，鈍角為負。');if(st===4)showCosResult();}
+ if(s.done[st]&&st!==6&&st!==5){if(st===0)success('已找到影子的位置 H。你可以繼續拖曳，或前往下一關研究它的特徵。');if(st===1)success('垂足 H 同時滿足 H 位於直線 ℓ 上、PH ⟂ ℓ。');if(st===2)success(`你已找到兩個向量：${decompMath}紫色 OH 是正射影向量，藍色 HP 是垂直分量。`);if(st===3)success('銳角的有向投影為正，直角為 0，鈍角為負。');if(st===4)showCosResult();}
  if(s.done[5]&&st===5)success('向量 a⃗ 在向量 b⃗ 上的正射影 = [(a⃗·b⃗)/‖b⃗‖²]b⃗，且 b ≠ 0。');
 }
 function showCosResult(){const {al,ang,signed,h}=compute();
@@ -529,16 +636,36 @@ function renderDerive(){
  out.innerHTML=html;
  const btn=$('deriveBtn');if(n===3){btn.textContent='三步推導完成 ✓';btn.disabled=true}else btn.textContent=`揭曉第 ${n+1} 步 →`;
 }
-function renderQuiz(){const area=$('activity');area.innerHTML=`<div class="caseinfo" id="quizData"></div>${answerFields('coords')}<div class="smallrow"><button class="secondary" id="quizPrev" ${s.quiz===0?'disabled':''}>← 前一題</button><button class="primary" id="quizNext" ${s.quizDone[s.quiz]?'':'disabled'}>${s.quiz===2?'完成學習 ✓':'下一題 →'}</button></div>`;
+function renderQuiz(){const area=$('activity');concealSubmissionFeedback();area.innerHTML=`<div class="caseinfo" id="quizData"></div><section class="quiz-rotate" aria-label="旋轉圖形觀察正射影"><div class="quiz-rotate-head"><strong>↻ 旋轉圖形，觀察投影怎麼變</strong><span id="quizRotateValue" class="quiz-rotate-value">0°</span></div><input type="range" class="quiz-rotate-control" id="quizRotateSlider" min="-180" max="180" value="${s.quizRotation}" step="5" aria-label="同時旋轉兩個向量的角度"><div class="quiz-rotate-actions"><button type="button" class="secondary" id="quizRotateMinus">順時針 −15°</button><button type="button" class="secondary" id="quizRotatePlus">逆時針 ＋15°</button><button type="button" class="secondary" id="quizRotateReset">回到原題</button></div><p class="quiz-rotate-description">兩個向量一起旋轉，夾角不變，但座標會改變；題目座標將同步更新。想解原本的固定題目，按「回到原題」。</p></section>${answerFields('coords')}<div class="smallrow"><button class="secondary" id="quizPrev" ${s.quiz===0?'disabled':''}>← 前一題</button><button class="primary" id="quizNext" ${s.quizDone[s.quiz]?'':'disabled'}>${s.quiz===2?'完成學習 ✓':'下一題 →'}</button></div>`;
  updateQuizPanel();bindAnswerFields();
+ const slider=$('quizRotateSlider');slider.oninput=()=>rotateQuizVectors(Number(slider.value));
+ $('quizRotateMinus').onclick=()=>rotateQuizVectors(s.quizRotation-15);
+ $('quizRotatePlus').onclick=()=>rotateQuizVectors(s.quizRotation+15);
+ $('quizRotateReset').onclick=()=>rotateQuizVectors(0);
  $('quizPrev').onclick=()=>{if(s.quiz>0){s.quiz--;resetExercise();renderQuiz();draw();reportLessonProgress();}};
  $('quizNext').onclick=()=>{if(!s.quizDone[s.quiz])return;if(s.quiz<2){s.quiz++;resetExercise();renderQuiz();draw();reportLessonProgress();}else{completeStep();$('quizNext').disabled=true;status('三題已完成！你已學會在平面上找垂足與正射影向量。','good');}};
  if(s.quizDone[s.quiz])success(`本題已通過。${solutionNow()} 你仍可拖曳 P、B 觀察投影如何改變，或按「下一題」。`);else status('可以先試著輸入 H 的座標，或直接點左側座標平面，或在 H 向量出現後點它的座標標籤填入。');}
 function solutionNow(){const {dot,bb,coef,h}=compute();return `目前 a⃗·b⃗=${fmt(dot)}，‖b⃗‖²=${fmt(bb)}，k=(a⃗·b⃗)/‖b⃗‖²=${fmt(coef)}，H=kb=${fmtPt(h)}。`;}
-function resetExercise(){const q=exercise[s.quiz];s.a={x:q.a[0],y:q.a[1]};s.b={x:q.b[0],y:q.b[1]};clearGuess();}
+// 將題目兩個向量以相同角度繞 O 旋轉：保留兩向量內積與相互夾角。
+function rotateQuizVectors(degrees){
+ if(s.step!==6)return;
+ s.quizRotation=clamp(Math.round(degrees/5)*5,-180,180);
+ const t=s.quizRotation*Math.PI/180,c=Math.cos(t),z=Math.sin(t),q=exercise[s.quiz];
+ const rotate=arr=>({x:arr[0]*c-arr[1]*z,y:arr[0]*z+arr[1]*c});
+ s.a=rotate(q.a);s.b=rotate(q.b);
+ clearGuess();clearAnswerFields();if(!s.quizDone[s.quiz])concealSubmissionFeedback();
+ const slider=$('quizRotateSlider'),label=$('quizRotateValue');
+ if(slider)slider.value=String(s.quizRotation);
+ if(label)label.textContent=`${s.quizRotation}°`;
+ draw();
+ const feedback=`已旋轉 ${s.quizRotation}°。圖形和題目座標已同步更新；請依現在的 a、b 計算 H，也可以按「回到原題」。`;
+ if(s.quizDone[s.quiz])solvedExploreNotice();else status(feedback);
+}
+function resetExercise(){const q=exercise[s.quiz];s.quizRotation=0;s.a={x:q.a[0],y:q.a[1]};s.b={x:q.b[0],y:q.b[1]};clearGuess();}
 function selectFirstGuess(coord){
  s.guess={x:snap(coord.x),y:snap(coord.y)};
- s.firstSubmitted=false;
+ s.selectedViaPlot=true;
+ s.firstSubmitted=false;concealSubmissionFeedback();
  const button=$('submitFirstGuess');if(button)button.disabled=false;
  const selection=$('firstSelection');if(selection)selection.textContent=`已選 H ${fmtPt(s.guess)} · 點「送出答案」檢查`; 
  draw();
@@ -549,12 +676,12 @@ function submitFirstGuess(){
  if(!s.guess){status('先在左側座標平面點選你猜的 H，再按送出答案。');return;}
  const guess={...s.guess},{h}=compute(),geom=guessGeometry(guess);
  const d=Math.hypot(guess.x-h.x,guess.y-h.y);
- s.firstSubmitted=true;
+ s.firstSubmitted=true;showSubmissionFeedback();
  const btn=$('submitFirstGuess');if(btn)btn.disabled=true;
  if(d<=0.32&&geom.lineDist<=0.24){
    clearGuess();completeStep();draw();
-   const selection=$('firstSelection');if(selection)selection.textContent='✓ 找到垂足 H！可以再點選或拖曳探索';
-   success(`你找對了！H=${fmtPt(h)} 同時符合兩個條件：<strong>H 位於投影直線 ℓ 上，且 PH ⟂ ℓ。</strong> 你可以繼續拖曳 P 或 B，觀察新的垂足位置，或前往下一關。`);
+   const selection=$('firstSelection');if(selection)selection.textContent='✓ 找到影子 H！你仍可移動 P 或 B';
+   success(`你找到了影子的位置 H=${fmtPt(h)}！現在圖上只顯示 H 這個點。可以再拖動 P 或 B，觀察 H 會如何改變；下一關再探討影子位置的幾何條件。`);
    return;
  }
  addAttempt();
@@ -565,11 +692,22 @@ function submitFirstGuess(){
  }
  draw();
 }
+function selectUnsubmittedPoint(coord){
+ const pt={x:snap(clamp(coord.x,-7.9,7.9)),y:snap(clamp(coord.y,-5.5,5.5))};
+ s.guess=pt;s.selectedViaPlot=true;
+ clearAnswerFields();
+ const x=$('answerX'),y=$('answerY');
+ // The values are the student's own selection, not the correct answer.
+ if(x&&y){x.value=fmt(pt.x);y.value=fmt(pt.y);}
+ concealSubmissionFeedback();draw();
+ const btn=$('submitAngleGuess');if(btn)btn.disabled=false;
+}
 function handleClick(coord,fromInput=false){const st=s.step;
+ showSubmissionFeedback();
  if(st===5)return;
  if(st===2){status('這一關不是重找 H，請直接點選圖上的「紫色 OH」與「藍色 HP」兩段向量。');return;}
  if(st===3&&!s.done[3]&&compute().ang<=97){status('先拖動綠色 P，使 OP 與 OB 的夾角成為「鈍角」（大於 90°），再來點出垂足 H。你可以先觀察 H 是否跑到 O 的反方向。','try');return;}
- const {h,ang,bl}=compute();s.guess={x:fromInput?coord.x:snap(coord.x),y:fromInput?coord.y:snap(coord.y)};
+ const {h,ang,bl}=compute();const angleSubmit=$('submitAngleGuess');if(angleSubmit)angleSubmit.disabled=true;s.guess={x:fromInput?coord.x:snap(coord.x),y:fromInput?coord.y:snap(coord.y)};
  const d=Math.hypot(s.guess.x-h.x,s.guess.y-h.y);
  const tolerance=fromInput?.07:st===0?.7:st===1?.56:st===6?.52:.6;
  if(d<=tolerance){clearGuess();if(st===6){const firstTime=!s.quizDone[s.quiz];s.quizDone[s.quiz]=true;reportLessonProgress();
@@ -599,7 +737,7 @@ function resetStep(){const st=s.step;s.a=st===1?{x:1,y:3}:{x:3,y:4};s.b=st===1?{
 function render(){const cfg=steps[s.step];$('stepKicker').textContent=`互動探索 · 0${s.step+1} / 07`;
  $('stepTitle').textContent=cfg.title;$('stepDesc').textContent=cfg.desc;
  $('promptTitle').textContent=cfg.q;$('promptIntro').textContent=cfg.intro;
- $('graphTitle').textContent=s.step<=1?'在座標平面上找影子':'拖曳向量・點選作答';
+ $('graphTitle').textContent=s.step===0?'在座標平面上找影子':s.step===1?'找出垂足 H':'拖曳向量・點選作答';
  resetStep();stageUI();draw();updateNav();updateTeacherPanel();}
 function fillList(id,items){const el=$(id);el.replaceChildren();items.forEach(item=>{const li=document.createElement('li');li.textContent=item;el.append(li);});}
 function updateTeacherPanel(){const panel=$('teacherPanel');panel.hidden=!s.teacher;if(!s.teacher)return;const note=teacherNotes[s.step];$('teacherQuote').innerHTML=note.quote;$('teacherGoal').textContent=note.goal;$('teacherAsk').textContent=note.ask;fillList('teacherPitfall',note.pitfalls);fillList('teacherMove',note.moves);}
@@ -627,7 +765,7 @@ svg.addEventListener('pointermove',e=>{if(!active||active.id!==e.pointerId)retur
  let p=convertPointer(e);if(!p)return;const x=snap(clamp(p.x,-7.5,7.5)),y=snap(clamp(p.y,-5.25,5.25));
  if(active.mode==='a')s.a={x,y};
  if(active.mode==='b'&&Math.hypot(x,y)>.8&&!(s.step===1&&!s.done[1]))s.b={x,y};
- clearGuess();clearAnswerFields();draw();
+ clearGuess();clearAnswerFields();const angleSubmit=$('submitAngleGuess');if(angleSubmit)angleSubmit.disabled=true;if(!s.done[s.step]&&(s.step!==6||!s.quizDone[s.quiz]))concealSubmissionFeedback();draw();
  if(s.step===0){
    const btn=$('submitFirstGuess');if(btn)btn.disabled=true;
    const selection=$('firstSelection');if(selection)selection.textContent='向量已改變，請重新點選 H';
@@ -638,7 +776,7 @@ svg.addEventListener('pointerup',e=>{if(!active||active.id!==e.pointerId)return;
   if(!a.moved){
    if(a.mode==='h-fill'||a.mode==='h-select'){if(s.step===2)selectComponent('parallel');else fillFromHVector();}
    else if(a.mode==='component-perp')selectComponent('perp');
-   else if(a.mode==='click'){const p=convertPointer(e);if(p){if(s.step===0)selectFirstGuess(p);else handleClick(p);}}
+   else if(a.mode==='click'){const p=convertPointer(e);if(p){if(s.step===0)selectFirstGuess(p);else if([1,3,4,6].includes(s.step))selectUnsubmittedPoint(p);else handleClick(p);}}
   }
 });
 svg.addEventListener('pointercancel',()=>active=null);

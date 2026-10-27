@@ -126,6 +126,13 @@ main{padding-top:26px;padding-bottom:55px}.lessonhead{margin-bottom:19px}.eyebro
 .graph-submit{background:#087f78;color:white}.graph-submit:hover:not(:disabled){background:#066d68}
 .graph-submit:disabled{opacity:.5;cursor:not-allowed}.graph-clear{background:white;color:#48667b;border-color:#cddde8}
 @media(max-width:610px){.graph-answer-bar{gap:9px;padding:12px}.graph-answer-copy{flex-basis:100%;font-size:15px}.graph-submit{flex:2}.graph-clear{flex:1}.graph-submit,.graph-clear{min-height:50px}}
+
+/* 網站最下方作者署名 */
+.site-footer{margin-top:28px;padding:20px 12px 12px;border-top:1px solid #dbe6ec;text-align:center}
+.site-footer .footer-note{font-size:12px;color:#8193a2;line-height:1.8}
+.site-authors{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:15px;color:#405d73;font-size:14px;line-height:1.7}
+.site-authors .authors-heading{font-size:12px;font-weight:800;letter-spacing:.1em;color:#668297;margin-bottom:3px}
+@media(max-width:610px){.site-footer{padding:18px 4px 10px}.site-authors{font-size:13px;gap:4px}}
 </style>
 </head>
 <body>
@@ -163,7 +170,14 @@ main{padding-top:26px;padding-bottom:55px}.lessonhead{margin-bottom:19px}.eyebro
   </div>
 </div>
 </section>
-<footer>一步一步看懂正射影｜免登入直接使用 · 學習進度僅保存在目前瀏覽器，不會傳送教師後台</footer>
+<footer class="site-footer">
+  <div class="footer-note">一步一步看懂正射影｜免登入直接使用 · 學習進度僅保存在目前瀏覽器，不會傳送教師後台</div>
+  <div class="site-authors" aria-label="網站作者">
+    <div class="authors-heading">作者</div>
+    <div>國立臺灣師範大學-江逸寬</div>
+    <div>國立臺灣師範大學-彭可丞</div>
+  </div>
+</footer>
 </main>
 <script>
 (()=>{'use strict';
